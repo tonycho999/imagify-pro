@@ -1,75 +1,128 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagify Pro - 올인원 미디어 도구</title>
+    <title>Imagify Pro - All-in-One Media Tool</title>
+    
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/features.css">
+    
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
 </head>
 <body>
 
     <header>
         <h1>✨ Imagify Pro</h1>
-        <p>설치 없는 무료 미디어 변환 도구</p>
+        <p>Free, Secure, Serverless Media Tools</p>
     </header>
 
     <nav class="nav">
-        <button onclick="switchTab('gif')" class="active" id="btn-gif">🎥 GIF 메이커</button>
-        <button onclick="switchTab('webp')" id="btn-webp">⚡ WebP 변환</button>
-        <button onclick="switchTab('meme')" id="btn-meme">🤣 밈 만들기</button>
-        <button onclick="switchTab('audio')" id="btn-audio">🎵 MP3 추출</button>
-        <button onclick="switchTab('icon')" id="btn-icon">📱 아이콘 생성</button>
+        <button onclick="switchTab('gif')" class="active" id="btn-gif">🎥 GIF Maker</button>
+        <button onclick="switchTab('webp')" id="btn-webp">⚡ WebP Convert</button>
+        <button onclick="switchTab('meme')" id="btn-meme">🤣 Meme Gen</button>
+        <button onclick="switchTab('audio')" id="btn-audio">🎵 Audio Extract</button>
+        <button onclick="switchTab('icon')" id="btn-icon">📱 Icon Gen</button>
     </nav>
 
     <main>
         <section id="tab-gif" class="active">
-            <h2>비디오 → GIF (구간 자르기 포함)</h2>
-            <input type="file" id="gif-upload" accept="video/*">
-            <div class="controls" style="display:none;" id="gif-controls">
-                <label>시작 시간: <input type="number" id="gif-start" value="0" style="width:50px">초</label>
-                <label>지속 시간: <input type="number" id="gif-duration" value="3" style="width:50px">초</label>
+            <h2>Video to GIF Converter</h2>
+            
+            <div class="guide">
+                <h3>📖 How to use</h3>
+                <ol>
+                    <li>Upload a video file (MP4, MOV, etc.).</li>
+                    <li>(Optional) Set the <b>Start Time</b> and <b>Duration</b> to cut the video.</li>
+                    <li>Click <b>"Convert to GIF"</b> and wait for the process.</li>
+                </ol>
             </div>
-            <button class="action-btn" onclick="processGif()">GIF 만들기</button>
+
+            <input type="file" id="gif-upload" accept="video/*">
+            
+            <div class="controls" style="display:none;" id="gif-controls">
+                <label>Start: <input type="number" id="gif-start" value="0" style="width:50px"> sec</label>
+                <label>Duration: <input type="number" id="gif-duration" value="3" style="width:50px"> sec</label>
+            </div>
+            
+            <button class="action-btn" onclick="processGif()">Convert to GIF</button>
             <div class="log" id="gif-log"></div>
             <div id="gif-result"></div>
         </section>
 
         <section id="tab-webp">
-            <h2>이미지(JPG/PNG) → WebP</h2>
-            <p>화질은 유지하고 용량은 50% 절약!</p>
+            <h2>JPG/PNG to WebP</h2>
+            
+            <div class="guide">
+                <h3>📖 How to use</h3>
+                <ol>
+                    <li>Upload an image file (JPG, PNG).</li>
+                    <li>The tool will automatically convert it to <b>WebP</b> format.</li>
+                    <li>Download will start automatically to save space (approx. -50%).</li>
+                </ol>
+            </div>
+
             <input type="file" id="webp-upload" accept="image/*">
-            <button class="action-btn" onclick="processWebp()">WebP 변환하기</button>
+            <button class="action-btn" onclick="processWebp()">Convert & Download</button>
             <div class="log" id="webp-log"></div>
         </section>
 
         <section id="tab-meme">
-            <h2>짤방(Meme) 만들기</h2>
+            <h2>Meme Generator</h2>
+            
+            <div class="guide">
+                <h3>📖 How to use</h3>
+                <ol>
+                    <li>Upload a source image.</li>
+                    <li>Type text in the <b>Top</b> or <b>Bottom</b> fields.</li>
+                    <li>The text will automatically appear on the image.</li>
+                    <li>Click <b>"Save Meme"</b> to download.</li>
+                </ol>
+            </div>
+
             <input type="file" id="meme-upload" accept="image/*">
             <div class="inputs">
-                <input type="text" id="meme-top" placeholder="윗글 (예: 개발자가)" class="meme-input">
-                <input type="text" id="meme-bottom" placeholder="아랫글 (예: 버그를 만났을 때)" class="meme-input">
+                <input type="text" id="meme-top" placeholder="TOP TEXT (e.g., WHEN CODE WORKS)" class="meme-input">
+                <input type="text" id="meme-bottom" placeholder="BOTTOM TEXT (e.g., BUT I DON'T KNOW WHY)" class="meme-input">
             </div>
-            <canvas id="meme-canvas"></canvas>
+            <canvas id="meme-canvas" style="display:none;"></canvas>
             <br>
-            <button class="action-btn" onclick="downloadMeme()">짤방 저장하기</button>
+            <button class="action-btn" onclick="downloadMeme()">Save Meme</button>
         </section>
 
         <section id="tab-audio">
-            <h2>비디오 → MP3 음원 추출</h2>
+            <h2>Video to MP3 Extractor</h2>
+            
+            <div class="guide">
+                <h3>📖 How to use</h3>
+                <ol>
+                    <li>Upload a video file (e.g., music video, lecture).</li>
+                    <li>Click <b>"Extract MP3"</b>.</li>
+                    <li>The audio track will be extracted instantly.</li>
+                </ol>
+            </div>
+
             <input type="file" id="audio-upload" accept="video/*">
-            <button class="action-btn" onclick="processAudio()">MP3 추출하기</button>
+            <button class="action-btn" onclick="processAudio()">Extract MP3</button>
             <div class="log" id="audio-log"></div>
             <div id="audio-result"></div>
         </section>
 
         <section id="tab-icon">
-            <h2>앱 아이콘 생성 (512px, 192px)</h2>
-            <p>이미지를 올리면 PWA용 표준 아이콘 2종을 만들어줍니다.</p>
+            <h2>App Icon Generator</h2>
+            
+            <div class="guide">
+                <h3>📖 How to use</h3>
+                <ol>
+                    <li>Upload a high-quality square image (logo).</li>
+                    <li>The tool generates <b>512x512</b> and <b>192x192</b> icons.</li>
+                    <li>These are standard sizes for PWA (Progressive Web Apps).</li>
+                </ol>
+            </div>
+
             <input type="file" id="icon-upload" accept="image/*">
-            <button class="action-btn" onclick="processIcon()">아이콘 만들기</button>
+            <button class="action-btn" onclick="processIcon()">Generate Icons</button>
             <div class="log" id="icon-log"></div>
             <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap;"></div>
         </section>
@@ -81,6 +134,6 @@
     <script src="js/meme.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/icon.js"></script>
-    
+
 </body>
 </html>
