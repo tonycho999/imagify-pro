@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free online tools for GIF creation, WebP conversion, Meme generation, Audio extraction, and App Icon resizing. No installation required.">
-    <meta name="keywords" content="GIF Maker, WebP Converter, Meme Generator, MP3 Extractor, Icon Generator, Online Image Tools, Free Converter, Imagify Pro">
-    <meta name="author" content="Imagify Pro">
-    
-    <meta property="og:title" content="Imagify Pro - All-in-One Media Tool">
-    <meta property="og:description" content="Fast, secure, and serverless media tools directly in your browser.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://your-site-name.pages.dev">
     <title>Imagify Pro - All-in-One Media Tool</title>
+    
+    <meta name="description" content="Free online tools for GIF creation, WebP conversion, Meme generation, Audio extraction, and App Icon resizing.">
+    <meta name="keywords" content="GIF Maker, WebP Converter, Meme Generator, MP3 Extractor, Icon Generator, Online Tools">
     
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -37,40 +32,22 @@
         <button onclick="switchTab('icon')" id="btn-icon">📱 Icon Gen</button>
     </nav>
 
-    <div class="ad-container">
-        <p style="font-size:12px; color:#999; margin-bottom:5px;">Advertisement</p>
-        
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-7272957295128241"
-             data-ad-slot="YOUR_AD_SLOT_ID_HERE" 
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-
     <main>
         <section id="tab-gif" class="active">
             <h2>Video to GIF Converter</h2>
-            
             <div class="guide">
                 <h3>📖 How to use</h3>
                 <ol>
-                    <li>Upload a video file (MP4, MOV, etc.).</li>
-                    <li>(Optional) Set the <b>Start Time</b> and <b>Duration</b> to cut the video.</li>
-                    <li>Click <b>"Convert to GIF"</b> and wait for the process.</li>
+                    <li>Upload a video file.</li>
+                    <li>(Optional) Set Start Time/Duration.</li>
+                    <li>Click <b>"Convert to GIF"</b>.</li>
                 </ol>
             </div>
-
             <input type="file" id="gif-upload" accept="video/*">
-            
             <div class="controls" style="display:none;" id="gif-controls">
                 <label>Start: <input type="number" id="gif-start" value="0" style="width:50px"> sec</label>
                 <label>Duration: <input type="number" id="gif-duration" value="3" style="width:50px"> sec</label>
             </div>
-            
             <button class="action-btn" onclick="processGif()">Convert to GIF</button>
             <div class="log" id="gif-log"></div>
             <div id="gif-result"></div>
@@ -78,16 +55,14 @@
 
         <section id="tab-webp">
             <h2>JPG/PNG to WebP</h2>
-            
             <div class="guide">
                 <h3>📖 How to use</h3>
                 <ol>
-                    <li>Upload an image file (JPG, PNG).</li>
-                    <li>The tool will automatically convert it to <b>WebP</b> format.</li>
-                    <li>Download will start automatically to save space (approx. -50%).</li>
+                    <li>Upload an image file.</li>
+                    <li>Click <b>"Convert & Download"</b>.</li>
+                    <li>It saves space (approx. -50%).</li>
                 </ol>
             </div>
-
             <input type="file" id="webp-upload" accept="image/*">
             <button class="action-btn" onclick="processWebp()">Convert & Download</button>
             <div class="log" id="webp-log"></div>
@@ -95,21 +70,18 @@
 
         <section id="tab-meme">
             <h2>Meme Generator</h2>
-            
             <div class="guide">
                 <h3>📖 How to use</h3>
                 <ol>
-                    <li>Upload a source image.</li>
-                    <li>Type text in the <b>Top</b> or <b>Bottom</b> fields.</li>
-                    <li>The text will automatically appear on the image.</li>
-                    <li>Click <b>"Save Meme"</b> to download.</li>
+                    <li>Upload an image.</li>
+                    <li>Type text in Top/Bottom fields.</li>
+                    <li>Click <b>"Save Meme"</b>.</li>
                 </ol>
             </div>
-
             <input type="file" id="meme-upload" accept="image/*">
             <div class="inputs">
-                <input type="text" id="meme-top" placeholder="TOP TEXT (e.g., WHEN CODE WORKS)" class="meme-input">
-                <input type="text" id="meme-bottom" placeholder="BOTTOM TEXT (e.g., BUT I DON'T KNOW WHY)" class="meme-input">
+                <input type="text" id="meme-top" placeholder="TOP TEXT" class="meme-input">
+                <input type="text" id="meme-bottom" placeholder="BOTTOM TEXT" class="meme-input">
             </div>
             <canvas id="meme-canvas" style="display:none;"></canvas>
             <br>
@@ -118,16 +90,13 @@
 
         <section id="tab-audio">
             <h2>Video to MP3 Extractor</h2>
-            
             <div class="guide">
                 <h3>📖 How to use</h3>
                 <ol>
-                    <li>Upload a video file (e.g., music video, lecture).</li>
+                    <li>Upload a video file.</li>
                     <li>Click <b>"Extract MP3"</b>.</li>
-                    <li>The audio track will be extracted instantly.</li>
                 </ol>
             </div>
-
             <input type="file" id="audio-upload" accept="video/*">
             <button class="action-btn" onclick="processAudio()">Extract MP3</button>
             <div class="log" id="audio-log"></div>
@@ -136,22 +105,42 @@
 
         <section id="tab-icon">
             <h2>App Icon Generator</h2>
-            
             <div class="guide">
                 <h3>📖 How to use</h3>
                 <ol>
-                    <li>Upload a high-quality square image (logo).</li>
-                    <li>The tool generates <b>512x512</b> and <b>192x192</b> icons.</li>
-                    <li>These are standard sizes for PWA (Progressive Web Apps).</li>
+                    <li>Upload a square image.</li>
+                    <li>Click <b>"Generate Icons"</b>.</li>
+                    <li>Get 512x512 & 192x192 icons.</li>
                 </ol>
             </div>
-
             <input type="file" id="icon-upload" accept="image/*">
             <button class="action-btn" onclick="processIcon()">Generate Icons</button>
             <div class="log" id="icon-log"></div>
             <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap;"></div>
         </section>
     </main>
+
+    <div id="ad-overlay" class="ad-overlay" style="display:none;">
+        <div class="ad-modal">
+            <h3 id="ad-status">⏳ Processing...</h3>
+            <p>Please wait while we create your file.</p>
+            
+            <div class="ad-box">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-7272957295128241"
+                     data-ad-slot="YOUR_AD_SLOT_ID_HERE"
+                     data-ad-format="rectangle"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+            <p class="ad-caption">Ad supports this free tool</p>
+            <button onclick="closeAdModal()" class="close-btn">Close / View Result</button>
+        </div>
+    </div>
 
     <script src="js/main.js"></script>
     <script src="js/gif.js"></script>
