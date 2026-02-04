@@ -64,6 +64,15 @@
             <div class="log" id="audio-log"></div>
             <div id="audio-result"></div>
         </section>
+
+        <section id="tab-icon">
+            <h2>앱 아이콘 생성 (512px, 192px)</h2>
+            <p>이미지를 올리면 PWA용 표준 아이콘 2종을 만들어줍니다.</p>
+            <input type="file" id="icon-upload" accept="image/*">
+            <button class="action-btn" onclick="processIcon()">아이콘 만들기</button>
+            <div class="log" id="icon-log"></div>
+            <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap;"></div>
+        </section>
     </main>
 
     <script src="js/main.js"></script>
