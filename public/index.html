@@ -3,11 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나만의 GIF 메이커</title>
+    <title>Imagify Pro - 올인원 미디어 도구</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
 </head>
 <body>
-    <h1>GIF 변환기 (GitHub 연동 성공!)</h1>
-    <p>이제 코드를 수정하면 자동으로 배포됩니다.</p>
-    <input type="file" id="videoUploader" accept="video/*">
+
+    <header>
+        <h1>✨ Imagify Pro</h1>
+        <p>설치 없는 무료 미디어 변환 도구</p>
+    </header>
+
+    <nav class="nav">
+        <button onclick="switchTab('gif')" class="active" id="btn-gif">🎥 GIF 메이커</button>
+        <button onclick="switchTab('webp')" id="btn-webp">⚡ WebP 변환</button>
+        <button onclick="switchTab('meme')" id="btn-meme">🤣 밈 만들기</button>
+        <button onclick="switchTab('audio')" id="btn-audio">🎵 MP3 추출</button>
+    </nav>
+
+    <main>
+        <section id="tab-gif" class="active">
+            <h2>비디오 → GIF (구간 자르기 포함)</h2>
+            <input type="file" id="gif-upload" accept="video/*">
+            <div class="controls" style="display:none;" id="gif-controls">
+                <label>시작 시간: <input type="number" id="gif-start" value="0" style="width:50px">초</label>
+                <label>지속 시간: <input type="number" id="gif-duration" value="3" style="width:50px">초</label>
+            </div>
+            <button class="action-btn" onclick="processGif()">GIF 만들기</button>
+            <div class="log" id="gif-log"></div>
+            <div id="gif-result"></div>
+        </section>
+
+        <section id="tab-webp">
+            <h2>이미지(JPG/PNG) → WebP</h2>
+            <p>화질은 유지하고 용량은 50% 절약!</p>
+            <input type="file" id="webp-upload" accept="image/*">
+            <button class="action-btn" onclick="processWebp()">WebP 변환하기</button>
+            <div class="log" id="webp-log"></div>
+        </section>
+
+        <section id="tab-meme">
+            <h2>짤방(Meme) 만들기</h2>
+            <input type="file" id="meme-upload" accept="image/*">
+            <div class="inputs">
+                <input type="text" id="meme-top" placeholder="윗글 (예: 개발자가)" class="meme-input">
+                <input type="text" id="meme-bottom" placeholder="아랫글 (예: 버그를 만났을 때)" class="meme-input">
+            </div>
+            <canvas id="meme-canvas"></canvas>
+            <br>
+            <button class="action-btn" onclick="downloadMeme()">짤방 저장하기</button>
+        </section>
+
+        <section id="tab-audio">
+            <h2>비디오 → MP3 음원 추출</h2>
+            <input type="file" id="audio-upload" accept="video/*">
+            <button class="action-btn" onclick="processAudio()">MP3 추출하기</button>
+            <div class="log" id="audio-log"></div>
+            <div id="audio-result"></div>
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/gif.js"></script>
+    <script src="js/webp.js"></script>
+    <script src="js/meme.js"></script>
+    <script src="js/audio.js"></script>
+
 </body>
 </html>
