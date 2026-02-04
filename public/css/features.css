@@ -1,0 +1,66 @@
+/* features.css : 기능별 세부 스타일 */
+
+/* [GIF] 시간 설정 컨트롤 */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+    background: #f0fdf4; /* 연한 초록 배경 */
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #bbf7d0;
+}
+.controls label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #166534;
+}
+.controls input {
+    width: 50px;
+    text-align: center;
+    padding: 5px;
+}
+
+/* [Meme] 짤방 텍스트 입력 영역 */
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+.meme-input {
+    border: 2px solid #e5e7eb !important;
+    text-align: center;
+}
+.meme-input:focus {
+    border-color: #ec4899 !important; /* 핑크색 강조 */
+}
+
+/* [Media] 이미지/비디오/캔버스 결과물 공통 */
+#video-preview,
+#meme-canvas,
+#gif-result img,
+#audio-result audio {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* 다운로드 링크 버튼화 */
+a[download] {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: bold;
+    border: 2px solid var(--primary);
+    padding: 8px 20px;
+    border-radius: 30px;
+    transition: 0.2s;
+}
+a[download]:hover {
+    background: var(--primary);
+    color: white;
+}
