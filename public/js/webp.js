@@ -6,6 +6,9 @@ function processWebp() {
     
     if (fileInput.files.length === 0) return alert("Please select an image!");
     
+    // 1. Open Ad Modal
+    window.openAdModal();
+
     const file = fileInput.files[0];
     const reader = new FileReader();
 
@@ -14,24 +17,25 @@ function processWebp() {
         img.src = e.target.result;
         
         img.onload = function() {
-            // Create Canvas
             const canvas = document.createElement('canvas');
             canvas.width = img.width;
             canvas.height = img.height;
-            
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
 
-            // Convert to WebP (Quality: 0.8)
             const webpUrl = canvas.toDataURL("image/webp", 0.8);
             
-            // Trigger Download
             const link = document.createElement('a');
             link.href = webpUrl;
             link.download = file.name.split('.')[0] + ".webp";
             link.click();
             
             log.innerText = "✅ Converted and Downloaded!";
+
+            // Close Ad automatically after 1.5 seconds for UX
+            setTimeout(() => {
+                window.closeAdModal();
+            }, 1500);
         }
     };
     reader.readAsDataURL(file);
