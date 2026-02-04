@@ -12,3 +12,14 @@ function switchTab(tabId) {
     document.getElementById('tab-' + tabId).classList.add('active');
     document.getElementById('btn-' + tabId).classList.add('active');
 }
+/* main.js 기존 코드 아래에 추가 */
+
+// 광고 모달 열기 함수
+window.openAdModal = function() {
+    document.getElementById('ad-overlay').style.display = 'flex';
+}
+
+// 광고 모달 닫기 함수
+window.closeAdModal = function() {
+    document.getElementById('ad-overlay').style.display = 'none';
+}
