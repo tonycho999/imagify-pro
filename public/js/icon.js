@@ -18,8 +18,11 @@ async function processIcon() {
     img.src = URL.createObjectURL(file);
 
     img.onload = function() {
+        // 512, 192, 180 사이즈 생성
         createIcon(img, 512, 'icon-512.png', resultDiv);
         createIcon(img, 192, 'icon-192.png', resultDiv);
+        createIcon(img, 180, 'icon-180.png', resultDiv); // [추가됨] iOS 표준
+        
         log.innerText = "✅ Icons Generated!";
         
         // Close after delay
@@ -45,6 +48,7 @@ function createIcon(imgElement, size, fileName, container) {
 
     const previewImg = document.createElement('img');
     previewImg.src = dataUrl;
+    // 미리보기 이미지가 너무 크지 않게 조절
     previewImg.style.width = size > 128 ? '128px' : size + 'px';
     previewImg.style.border = "1px solid #ddd";
     previewImg.style.borderRadius = "15px";
