@@ -1,10 +1,10 @@
+/* webp.js */
 function processWebp() {
     const fileInput = document.getElementById('webp-upload');
     const log = document.getElementById('webp-log');
     
     if (fileInput.files.length === 0) return alert("Please select an image!");
     
-    // [광고 체크]
     window.checkAd(() => {
         const file = fileInput.files[0];
         const reader = new FileReader();
