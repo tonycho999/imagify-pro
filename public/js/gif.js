@@ -1,5 +1,3 @@
-/* gif.js : Video to GIF Converter */
-
 const gifInput = document.getElementById('gif-upload');
 
 gifInput.addEventListener('change', () => {
@@ -10,54 +8,41 @@ async function processGif() {
     const file = gifInput.files[0];
     if (!file) return alert("Please upload a video first.");
 
-    // 1. Open Ad Modal
-    window.openAdModal();
+    // [광고 체크] 통과하면 내부 함수 실행
+    window.checkAd(async () => {
+        const log = document.getElementById('gif-log');
+        const start = document.getElementById('gif-start').value;
+        const duration = document.getElementById('gif-duration').value;
 
-    const log = document.getElementById('gif-log');
-    const start = document.getElementById('gif-start').value;
-    const duration = document.getElementById('gif-duration').value;
+        log.innerText = "⏳ Loading FFmpeg engine...";
+        if (!window.ffmpeg.isLoaded()) await window.ffmpeg.load();
 
-    log.innerText = "⏳ Loading FFmpeg engine...";
-    
-    // Load FFmpeg if not loaded
-    if (!window.ffmpeg.isLoaded()) await window.ffmpeg.load();
+        log.innerText = "✂️ Processing video...";
+        window.ffmpeg.FS('writeFile', 'input.mp4', await FFmpeg.fetchFile(file));
 
-    log.innerText = "✂️ Processing video... (Converting & Cutting)";
-    
-    // Write file to memory
-    window.ffmpeg.FS('writeFile', 'input.mp4', await FFmpeg.fetchFile(file));
+        await window.ffmpeg.run(
+            '-i', 'input.mp4', '-ss', start, '-t', duration,
+            '-vf', 'fps=10,scale=320:-1', '-f', 'gif', 'output.gif'
+        );
 
-    // Run FFmpeg command
-    await window.ffmpeg.run(
-        '-i', 'input.mp4',
-        '-ss', start,
-        '-t', duration,
-        '-vf', 'fps=10,scale=320:-1',
-        '-f', 'gif', 'output.gif'
-    );
-
-    // Read result
-    const data = window.ffmpeg.FS('readFile', 'output.gif');
-    const url = URL.createObjectURL(new Blob([data.buffer], { type: 'image/gif' }));
-    
-    // Show result
-    const img = document.createElement('img');
-    img.src = url;
-    
-    const resultDiv = document.getElementById('gif-result');
-    resultDiv.innerHTML = '';
-    resultDiv.appendChild(img);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'imagify-cut.gif';
-    link.innerText = "⬇️ Download GIF";
-    link.className = "action-btn";
-    link.style.display = "block";
-    resultDiv.appendChild(link);
-    
-    log.innerText = "✅ Conversion Complete!";
-    
-    // Update Modal Status
-    document.getElementById('ad-status').innerText = "✅ Done! Click Close to view.";
+        const data = window.ffmpeg.FS('readFile', 'output.gif');
+        const url = URL.createObjectURL(new Blob([data.buffer], { type: 'image/gif' }));
+        
+        const img = document.createElement('img');
+        img.src = url;
+        
+        const resultDiv = document.getElementById('gif-result');
+        resultDiv.innerHTML = '';
+        resultDiv.appendChild(img);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'imagify-cut.gif';
+        link.innerText = "⬇️ Download GIF";
+        link.className = "action-btn";
+        link.style.display = "block";
+        resultDiv.appendChild(link);
+        
+        log.innerText = "✅ Conversion Complete!";
+    });
 }
