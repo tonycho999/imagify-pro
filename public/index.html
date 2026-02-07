@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/features.css">
     
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4F46E5">
+    <link rel="apple-touch-icon" href="img/icon-192.png">
+
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7272957295128241"
@@ -21,109 +25,142 @@
 
     <header>
         <h1>✨ Imagify Pro</h1>
-        <p>Free, Secure, Serverless Media Tools</p>
+        <p data-i18n="subtitle">Free, Secure, Serverless Media Tools</p>
+        
+        <div class="install-btn-area">
+            <button id="install-btn">⬇️ Install App</button>
+        </div>
     </header>
 
     <nav class="nav">
-        <button onclick="switchTab('gif')" class="active" id="btn-gif">🎥 GIF Maker</button>
-        <button onclick="switchTab('webp')" id="btn-webp">⚡ WebP Convert</button>
-        <button onclick="switchTab('meme')" id="btn-meme">🤣 Meme Gen</button>
-        <button onclick="switchTab('audio')" id="btn-audio">🎵 Audio Extract</button>
-        <button onclick="switchTab('icon')" id="btn-icon">📱 Icon Gen</button>
+        <button onclick="switchTab('gif')" class="active" id="btn-gif" data-i18n="nav_gif">🎥 GIF Maker</button>
+        <button onclick="switchTab('webp')" id="btn-webp" data-i18n="nav_webp">⚡ WebP Convert</button>
+        <button onclick="switchTab('meme')" id="btn-meme" data-i18n="nav_meme">🤣 Meme Gen</button>
+        <button onclick="switchTab('audio')" id="btn-audio" data-i18n="nav_audio">🎵 Audio Extract</button>
+        <button onclick="switchTab('icon')" id="btn-icon" data-i18n="nav_icon">📱 Icon Gen</button>
     </nav>
 
     <main>
         <section id="tab-gif" class="active">
-            <h2>Video to GIF Converter</h2>
+            <h2 data-i18n="h2_gif">Video to GIF Converter</h2>
             <div class="guide">
-                <h3>📖 How to use</h3>
+                <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
-                    <li>Upload a video file.</li>
-                    <li>(Optional) Set Start Time/Duration.</li>
-                    <li>Click <b>"Convert to GIF"</b>.</li>
+                    <li data-i18n="guide_gif_1">Upload a video file.</li>
+                    <li data-i18n="guide_gif_2">(Optional) Set Start Time/Duration.</li>
+                    <li data-i18n="guide_gif_3">Click <b>Convert to GIF</b>.</li>
                 </ol>
             </div>
             <input type="file" id="gif-upload" accept="video/*">
             <div class="controls" style="display:none;" id="gif-controls">
-                <label>Start: <input type="number" id="gif-start" value="0" style="width:50px"> sec</label>
-                <label>Duration: <input type="number" id="gif-duration" value="3" style="width:50px"> sec</label>
+                <label><span data-i18n="label_start">Start:</span> <input type="number" id="gif-start" value="0" style="width:50px"> sec</label>
+                <label><span data-i18n="label_duration">Duration:</span> <input type="number" id="gif-duration" value="3" style="width:50px"> sec</label>
             </div>
-            <button class="action-btn" onclick="processGif()">Convert to GIF</button>
+            <button class="action-btn" onclick="processGif()" data-i18n="btn_gif">Convert to GIF</button>
             <div class="log" id="gif-log"></div>
             <div id="gif-result"></div>
         </section>
 
         <section id="tab-webp">
-            <h2>JPG/PNG to WebP</h2>
+            <h2 data-i18n="h2_webp">JPG/PNG to WebP</h2>
             <div class="guide">
-                <h3>📖 How to use</h3>
+                <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
-                    <li>Upload an image file.</li>
-                    <li>Click <b>"Convert & Download"</b>.</li>
-                    <li>It saves space (approx. -50%).</li>
+                    <li data-i18n="guide_webp_1">Upload an image file.</li>
+                    <li data-i18n="guide_webp_2">Click <b>Convert & Download</b>.</li>
+                    <li data-i18n="guide_webp_3">Saves space (approx. -50%).</li>
                 </ol>
             </div>
             <input type="file" id="webp-upload" accept="image/*">
-            <button class="action-btn" onclick="processWebp()">Convert & Download</button>
+            <button class="action-btn" onclick="processWebp()" data-i18n="btn_webp">Convert & Download</button>
             <div class="log" id="webp-log"></div>
         </section>
 
         <section id="tab-meme">
-            <h2>Meme Generator</h2>
+            <h2 data-i18n="h2_meme">Meme Generator</h2>
             <div class="guide">
-                <h3>📖 How to use</h3>
+                <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
-                    <li>Upload an image.</li>
-                    <li>Type text in Top/Bottom fields.</li>
-                    <li>Click <b>"Save Meme"</b>.</li>
+                    <li data-i18n="guide_meme_1">Upload an image.</li>
+                    <li data-i18n="guide_meme_2">Type text in Top/Bottom fields.</li>
+                    <li data-i18n="guide_meme_3">Click <b>Save Meme</b>.</li>
                 </ol>
             </div>
             <input type="file" id="meme-upload" accept="image/*">
             <div class="inputs">
-                <input type="text" id="meme-top" placeholder="TOP TEXT" class="meme-input">
-                <input type="text" id="meme-bottom" placeholder="BOTTOM TEXT" class="meme-input">
+                <input type="text" id="meme-top" placeholder="TOP TEXT" class="meme-input" data-i18n="ph_top">
+                <input type="text" id="meme-bottom" placeholder="BOTTOM TEXT" class="meme-input" data-i18n="ph_bottom">
             </div>
             <canvas id="meme-canvas" style="display:none;"></canvas>
             <br>
-            <button class="action-btn" onclick="downloadMeme()">Save Meme</button>
+            <button class="action-btn" onclick="downloadMeme()" data-i18n="btn_meme">Save Meme</button>
         </section>
 
         <section id="tab-audio">
-            <h2>Video to MP3 Extractor</h2>
+            <h2 data-i18n="h2_audio">Video to MP3 Extractor</h2>
             <div class="guide">
-                <h3>📖 How to use</h3>
+                <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
-                    <li>Upload a video file.</li>
-                    <li>Click <b>"Extract MP3"</b>.</li>
+                    <li data-i18n="guide_audio_1">Upload a video file.</li>
+                    <li data-i18n="guide_audio_2">Click <b>Extract MP3</b>.</li>
                 </ol>
             </div>
             <input type="file" id="audio-upload" accept="video/*">
-            <button class="action-btn" onclick="processAudio()">Extract MP3</button>
+            <button class="action-btn" onclick="processAudio()" data-i18n="btn_audio">Extract MP3</button>
             <div class="log" id="audio-log"></div>
             <div id="audio-result"></div>
         </section>
 
         <section id="tab-icon">
-            <h2>App Icon Generator</h2>
+            <h2 data-i18n="h2_icon">App Icon Generator</h2>
             <div class="guide">
-                <h3>📖 How to use</h3>
+                <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
-                    <li>Upload a square image.</li>
-                    <li>Click <b>"Generate Icons"</b>.</li>
-                    <li>Get 512, 192, 180px icons.</li>
+                    <li data-i18n="guide_icon_1">Upload a square image.</li>
+                    <li data-i18n="guide_icon_2">Click <b>Generate Icons</b>.</li>
+                    <li data-i18n="guide_icon_3">Get 512, 192, 180px icons.</li>
                 </ol>
             </div>
             <input type="file" id="icon-upload" accept="image/*">
-            <button class="action-btn" onclick="processIcon()">Generate Icons</button>
+            <button class="action-btn" onclick="processIcon()" data-i18n="btn_icon">Generate Icons</button>
             <div class="log" id="icon-log"></div>
             <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap;"></div>
         </section>
     </main>
 
+    <div class="game-promo-section">
+        <a href="https://word-master9.vercel.app/" target="_blank" class="game-link">
+            <div class="game-image-wrapper">
+                <img src="img/banner1.jpg" alt="Word Master Game" class="game-banner-img">
+                <span class="app-badge">📱 Installable App</span>
+            </div>
+        </a>
+        <div class="game-info">
+            <p>Challenge Your Brain <b>Word Master</b></p>
+            <a href="https://word-master9.vercel.app/" target="_blank" class="install-cta-btn">
+                🚀 Play Now
+            </a>
+            <p class="sub-text">*Available on Web & Mobile</p>
+        </div>
+    </div>
+
+    <footer id="bottom-ad-container" class="ad-footer">
+        <p>Supported by Ad</p>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-7272957295128241"
+             data-ad-slot="YOUR_NEW_AD_SLOT_ID"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </footer>
+
     <div id="ad-overlay" class="ad-overlay" style="display:none;">
         <div class="ad-modal">
             <h3>⏳ Advertisement</h3>
-            <p id="ad-timer-txt">Please wait just a moment.</p>
+            <p id="ad-timer-txt" data-i18n="ad_wait">Please wait just a moment.</p>
             
             <div class="ad-box">
                 <ins class="adsbygoogle"
@@ -137,42 +174,44 @@
                 </script>
             </div>
 
-            <p class="ad-caption">Ad supports this free tool (Free for 10 mins after watching)</p>
-            <button id="ad-close-btn" class="close-btn" disabled>Wait 5s...</button>
+            <p class="ad-caption" data-i18n="ad_caption">Ad supports this free tool (Free for 10 mins after watching)</p>
+            <button id="ad-close-btn" class="close-btn" disabled data-i18n="ad_close_btn">Wait 5s...</button>
         </div>
     </div>
 
     <div id="welcome-overlay" class="ad-overlay" style="display:none;">
         <div class="ad-modal" style="max-width: 450px;">
             <div style="font-size: 40px; margin-bottom: 10px;">👋</div>
-            <h3>Welcome to Imagify Pro!</h3>
+            <h3 data-i18n="welcome_title">Welcome to Imagify Pro!</h3>
             
             <div style="background:#eef2ff; padding:15px; border-radius:10px; margin:20px 0; text-align:left;">
                 <p style="margin:5px 0; font-weight:bold; color:#4338ca;">🚀 Free Policy:</p>
                 <ul style="margin:5px 0 5px 20px; color:#555; font-size:14px;">
-                    <li>Watch <b style="color:#e11d48">1 short ad</b> now.</li>
-                    <li>Get <b style="color:#16a34a">10 minutes</b> of unlimited free access.</li>
-                    <li>No more ads during your free time!</li>
+                    <li data-i18n="welcome_desc_1">Watch <b style="color:#e11d48">1 short ad</b> now.</li>
+                    <li data-i18n="welcome_desc_2">Get <b style="color:#16a34a">10 minutes</b> of unlimited free access.</li>
+                    <li data-i18n="welcome_desc_3">No more ads during your free time!</li>
                 </ul>
             </div>
 
             <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                <button onclick="startWithAd()" class="action-btn" style="margin:0; background:#4F46E5; flex:1;">
+                <button onclick="startWithAd()" class="action-btn" style="margin:0; background:#4F46E5; flex:1;" data-i18n="btn_watch">
                     📺 Watch Ad & Start
                 </button>
-                <button onclick="closeWelcome()" class="action-btn" style="margin:0; background:#9ca3af; flex:1;">
+                <button onclick="closeWelcome()" class="action-btn" style="margin:0; background:#9ca3af; flex:1;" data-i18n="btn_look">
                     Just look around
                 </button>
             </div>
         </div>
     </div>
 
+    <script src="js/lang.js"></script>
     <script src="js/main.js"></script>
     <script src="js/gif.js"></script>
     <script src="js/webp.js"></script>
     <script src="js/meme.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/icon.js"></script>
+    <script src="js/pwa.js"></script>
 
 </body>
 </html>
