@@ -1,5 +1,3 @@
-/* icon.js : App Icon Generator */
-
 async function processIcon() {
     const fileInput = document.getElementById('icon-upload');
     const log = document.getElementById('icon-log');
@@ -7,29 +5,22 @@ async function processIcon() {
 
     if (fileInput.files.length === 0) return alert("Please upload an image!");
 
-    // 1. Open Ad Modal
-    window.openAdModal();
+    // [광고 체크]
+    window.checkAd(() => {
+        const file = fileInput.files[0];
+        log.innerText = "⏳ Generating icons...";
+        resultDiv.innerHTML = "";
 
-    const file = fileInput.files[0];
-    log.innerText = "⏳ Generating icons...";
-    resultDiv.innerHTML = "";
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
 
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
-
-    img.onload = function() {
-        // 512, 192, 180 사이즈 생성
-        createIcon(img, 512, 'icon-512.png', resultDiv);
-        createIcon(img, 192, 'icon-192.png', resultDiv);
-        createIcon(img, 180, 'icon-180.png', resultDiv); // [추가됨] iOS 표준
-        
-        log.innerText = "✅ Icons Generated!";
-        
-        // Close after delay
-        setTimeout(() => {
-            window.closeAdModal();
-        }, 1500);
-    };
+        img.onload = function() {
+            createIcon(img, 512, 'icon-512.png', resultDiv);
+            createIcon(img, 192, 'icon-192.png', resultDiv);
+            createIcon(img, 180, 'icon-180.png', resultDiv);
+            log.innerText = "✅ Icons Generated!";
+        };
+    });
 }
 
 function createIcon(imgElement, size, fileName, container) {
@@ -40,7 +31,6 @@ function createIcon(imgElement, size, fileName, container) {
     ctx.drawImage(imgElement, 0, 0, size, size);
 
     const dataUrl = canvas.toDataURL('image/png');
-
     const wrapper = document.createElement('div');
     wrapper.style.display = "inline-block";
     wrapper.style.margin = "10px";
@@ -48,7 +38,6 @@ function createIcon(imgElement, size, fileName, container) {
 
     const previewImg = document.createElement('img');
     previewImg.src = dataUrl;
-    // 미리보기 이미지가 너무 크지 않게 조절
     previewImg.style.width = size > 128 ? '128px' : size + 'px';
     previewImg.style.border = "1px solid #ddd";
     previewImg.style.borderRadius = "15px";
