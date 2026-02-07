@@ -1,3 +1,4 @@
+/* meme.js */
 const memeInput = document.getElementById('meme-upload');
 const memeCanvas = document.getElementById('meme-canvas');
 const ctx = memeCanvas.getContext('2d');
@@ -52,7 +53,6 @@ function drawMeme() {
 function downloadMeme() {
     if (!currentMemeImg) return alert("Please upload an image first!");
     
-    // [광고 체크]
     window.checkAd(() => {
         const imageUrl = memeCanvas.toDataURL('image/png');
         const link = document.createElement('a');
