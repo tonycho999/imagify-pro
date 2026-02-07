@@ -1,3 +1,4 @@
+/* audio.js */
 async function processAudio() {
     const fileInput = document.getElementById('audio-upload');
     const log = document.getElementById('audio-log');
@@ -5,7 +6,6 @@ async function processAudio() {
 
     if (fileInput.files.length === 0) return alert("Please select a video file!");
 
-    // [광고 체크]
     window.checkAd(async () => {
         const file = fileInput.files[0];
         log.innerText = "⏳ Preparing FFmpeg engine...";
