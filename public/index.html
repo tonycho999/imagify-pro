@@ -138,8 +138,32 @@
             </div>
 
             <p class="ad-caption">Ad supports this free tool (Free for 10 mins after watching)</p>
-            
             <button id="ad-close-btn" class="close-btn" disabled>Wait 5s...</button>
+        </div>
+    </div>
+
+    <div id="welcome-overlay" class="ad-overlay" style="display:none;">
+        <div class="ad-modal" style="max-width: 450px;">
+            <div style="font-size: 40px; margin-bottom: 10px;">👋</div>
+            <h3>Welcome to Imagify Pro!</h3>
+            
+            <div style="background:#eef2ff; padding:15px; border-radius:10px; margin:20px 0; text-align:left;">
+                <p style="margin:5px 0; font-weight:bold; color:#4338ca;">🚀 Free Policy:</p>
+                <ul style="margin:5px 0 5px 20px; color:#555; font-size:14px;">
+                    <li>Watch <b style="color:#e11d48">1 short ad</b> now.</li>
+                    <li>Get <b style="color:#16a34a">10 minutes</b> of unlimited free access.</li>
+                    <li>No more ads during your free time!</li>
+                </ul>
+            </div>
+
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                <button onclick="startWithAd()" class="action-btn" style="margin:0; background:#4F46E5; flex:1;">
+                    📺 Watch Ad & Start
+                </button>
+                <button onclick="closeWelcome()" class="action-btn" style="margin:0; background:#9ca3af; flex:1;">
+                    Just look around
+                </button>
+            </div>
         </div>
     </div>
 
