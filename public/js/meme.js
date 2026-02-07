@@ -1,5 +1,3 @@
-/* meme.js : Meme Generator */
-
 const memeInput = document.getElementById('meme-upload');
 const memeCanvas = document.getElementById('meme-canvas');
 const ctx = memeCanvas.getContext('2d');
@@ -10,15 +8,11 @@ let currentMemeImg = null;
 memeInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if(!file) return;
-
     const reader = new FileReader();
     reader.onload = (event) => {
         const img = new Image();
         img.src = event.target.result;
-        img.onload = () => {
-            currentMemeImg = img;
-            drawMeme();
-        };
+        img.onload = () => { currentMemeImg = img; drawMeme(); };
     };
     reader.readAsDataURL(file);
 });
@@ -28,11 +22,9 @@ bottomTextInput.addEventListener('input', drawMeme);
 
 function drawMeme() {
     if (!currentMemeImg) return;
-
     memeCanvas.width = currentMemeImg.width;
     memeCanvas.height = currentMemeImg.height;
     memeCanvas.style.display = 'block';
-
     ctx.drawImage(currentMemeImg, 0, 0);
 
     const fontSize = Math.floor(memeCanvas.width / 10);
@@ -49,7 +41,6 @@ function drawMeme() {
         ctx.strokeText(topText, memeCanvas.width / 2, memeCanvas.height * 0.05);
         ctx.fillText(topText, memeCanvas.width / 2, memeCanvas.height * 0.05);
     }
-
     const bottomText = bottomTextInput.value.toUpperCase();
     if (bottomText) {
         ctx.textBaseline = 'bottom';
@@ -61,17 +52,12 @@ function drawMeme() {
 function downloadMeme() {
     if (!currentMemeImg) return alert("Please upload an image first!");
     
-    // 1. Open Ad Modal
-    window.openAdModal();
-
-    const imageUrl = memeCanvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.download = 'imagify-meme.png';
-    link.href = imageUrl;
-    link.click();
-
-    // Close after short delay
-    setTimeout(() => {
-        window.closeAdModal();
-    }, 1500);
+    // [광고 체크]
+    window.checkAd(() => {
+        const imageUrl = memeCanvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = 'imagify-meme.png';
+        link.href = imageUrl;
+        link.click();
+    });
 }
