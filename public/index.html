@@ -6,16 +6,11 @@
     <title>Imagify Pro - All-in-One Media Tool</title>
     
     <meta name="description" content="Free online tools for GIF creation, WebP conversion, Meme generation, Audio extraction, and App Icon resizing.">
-    <meta name="keywords" content="GIF Maker, WebP Converter, Meme Generator, MP3 Extractor, Icon Generator, Online Tools">
     
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/features.css">
     
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4F46E5">
-    <link rel="apple-touch-icon" href="img/icon-192.png">
-
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7272957295128241"
@@ -26,10 +21,6 @@
     <header>
         <h1>✨ Imagify Pro</h1>
         <p data-i18n="subtitle">Free, Secure, Serverless Media Tools</p>
-        
-        <div class="install-btn-area">
-            <button id="install-btn">⬇️ Install App</button>
-        </div>
     </header>
 
     <nav class="nav">
@@ -128,34 +119,14 @@
         </section>
     </main>
 
-    <div class="game-promo-section">
+    <div id="bottom-game-promo" class="game-promo-section" style="margin-bottom: 50px;">
         <a href="https://word-master9.vercel.app/" target="_blank" class="game-link">
             <div class="game-image-wrapper">
                 <img src="img/banner1.jpg" alt="Word Master Game" class="game-banner-img">
-                <span class="app-badge">📱 Installable App</span>
+                <span class="app-badge">🎮 Play Free</span>
             </div>
         </a>
-        <div class="game-info">
-            <p>Challenge Your Brain <b>Word Master</b></p>
-            <a href="https://word-master9.vercel.app/" target="_blank" class="install-cta-btn">
-                🚀 Play Now
-            </a>
-            <p class="sub-text">*Available on Web & Mobile</p>
-        </div>
     </div>
-
-    <footer id="bottom-ad-container" class="ad-footer">
-        <p>Supported by Ad</p>
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-7272957295128241"
-             data-ad-slot="YOUR_NEW_AD_SLOT_ID"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </footer>
 
     <div id="ad-overlay" class="ad-overlay" style="display:none;">
         <div class="ad-modal">
@@ -166,15 +137,12 @@
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-7272957295128241"
-                     data-ad-slot="YOUR_AD_SLOT_ID_HERE"
+                     data-ad-slot="YOUR_GOOGLE_AD_ID_HERE"
                      data-ad-format="rectangle"
                      data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
             </div>
 
-            <p class="ad-caption" data-i18n="ad_caption">Ad supports this free tool (Free for 10 mins after watching)</p>
+            <p class="ad-caption" data-i18n="ad_caption">Ad supports this free tool</p>
             <button id="ad-close-btn" class="close-btn" disabled data-i18n="ad_close_btn">Wait 5s...</button>
         </div>
     </div>
@@ -211,7 +179,6 @@
     <script src="js/meme.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/icon.js"></script>
-    <script src="js/pwa.js"></script>
 
 </body>
 </html>
