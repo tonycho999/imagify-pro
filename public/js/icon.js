@@ -1,3 +1,4 @@
+/* icon.js */
 async function processIcon() {
     const fileInput = document.getElementById('icon-upload');
     const log = document.getElementById('icon-log');
@@ -5,7 +6,6 @@ async function processIcon() {
 
     if (fileInput.files.length === 0) return alert("Please upload an image!");
 
-    // [광고 체크]
     window.checkAd(() => {
         const file = fileInput.files[0];
         log.innerText = "⏳ Generating icons...";
