@@ -127,7 +127,7 @@ section.active {
 
 .game-promo-section {
     /* [수정] 배너 크기 조절 (300px ~ 400px 사이 추천) */
-    max-width: 320px; 
+    max-width: 400px; 
     
     width: 90%;       /* 모바일 화면보다 작을 땐 화면의 90%만 차지 */
     margin: 40px auto; /* 위아래 여백 40px, 좌우 자동(중앙정렬) */
@@ -149,5 +149,5 @@ section.active {
 
 /* 마우스 올렸을 때 살짝 커지는 효과 */
 .game-link:hover .game-banner-img {
-    transform: scale(1.05); 
+    transform: scale(1.1); 
 }
