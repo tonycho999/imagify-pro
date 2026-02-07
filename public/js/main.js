@@ -19,7 +19,35 @@ const AD_CONFIG = {
     WAIT_SECONDS: 5            // 5초 대기
 };
 
-// 광고 체크 함수
+// [NEW] 페이지 로드 시 웰컴 팝업 체크
+window.onload = function() {
+    const now = new Date().getTime();
+    const today = new Date().toISOString().split('T')[0];
+    
+    // 저장된 데이터 확인
+    let storageData = JSON.parse(localStorage.getItem('imagify_ad_data'));
+
+    // 데이터가 없거나, 날짜가 지났거나, 무료 시간이 끝났다면 -> 웰컴 팝업 띄우기
+    if (!storageData || storageData.date !== today || now > storageData.freeUntil) {
+        document.getElementById('welcome-overlay').style.display = 'flex';
+    }
+};
+
+// [NEW] 웰컴 팝업 닫기
+window.closeWelcome = function() {
+    document.getElementById('welcome-overlay').style.display = 'none';
+};
+
+// [NEW] 광고 보고 시작하기 (웰컴 팝업에서 클릭 시)
+window.startWithAd = function() {
+    closeWelcome(); // 웰컴 팝업 닫고
+    // 강제로 광고 체크 함수 실행 -> 조건이 안 맞으므로 광고 팝업이 뜸
+    window.checkAd(() => {
+        alert("🎉 You have 10 minutes of free time now!");
+    });
+};
+
+// 광고 체크 함수 (기존 로직 유지)
 window.checkAd = function(callback) {
     const now = new Date().getTime();
     const today = new Date().toISOString().split('T')[0];
@@ -82,9 +110,10 @@ function finishAd(callback) {
     document.getElementById('ad-overlay').style.display = 'none';
 
     // 보상 지급 및 저장
-    const storageData = JSON.parse(localStorage.getItem('imagify_ad_data'));
+    const storageData = JSON.parse(localStorage.getItem('imagify_ad_data')) || { count: 0 };
     storageData.count += 1;
     storageData.freeUntil = new Date().getTime() + AD_CONFIG.FREE_TIME;
+    storageData.date = new Date().toISOString().split('T')[0]; // 날짜 갱신 보장
     
     localStorage.setItem('imagify_ad_data', JSON.stringify(storageData));
 
