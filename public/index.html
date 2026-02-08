@@ -6,8 +6,8 @@
     <title>Imagify Pro - All-in-One Media Tool</title>
 
     <meta name="google-site-verification" content="jpV9ytZrmyOE3ncVmwd9y67IjH7vbZ_W5f1p-c7R940" />
-    
     <meta name="description" content="Free online tools for GIF creation, WebP conversion, Meme generation, Audio extraction, and App Icon resizing.">
+    <meta name="theme-color" content="#4F46E5">
     
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -25,7 +25,7 @@
         <p data-i18n="subtitle">Free, Secure, Serverless Media Tools</p>
     </header>
 
-    <nav class="nav">
+    <nav class="nav" role="tablist">
         <button onclick="switchTab('gif')" class="active" id="btn-gif" data-i18n="nav_gif">🎥 GIF Maker</button>
         <button onclick="switchTab('webp')" id="btn-webp" data-i18n="nav_webp">⚡ WebP Convert</button>
         <button onclick="switchTab('meme')" id="btn-meme" data-i18n="nav_meme">🤣 Meme Gen</button>
@@ -44,17 +44,19 @@
                     <li data-i18n="guide_gif_3">Click <b>Convert to GIF</b>.</li>
                 </ol>
             </div>
-            <input type="file" id="gif-upload" accept="video/*">
+            <div class="upload-area">
+                <input type="file" id="gif-upload" accept="video/*">
+            </div>
             <div class="controls" style="display:none;" id="gif-controls">
-                <label><span data-i18n="label_start">Start:</span> <input type="number" id="gif-start" value="0" style="width:50px"> sec</label>
-                <label><span data-i18n="label_duration">Duration:</span> <input type="number" id="gif-duration" value="3" style="width:50px"> sec</label>
+                <label><span data-i18n="label_start">Start:</span> <input type="number" id="gif-start" value="0" min="0" style="width:60px"> sec</label>
+                <label><span data-i18n="label_duration">Duration:</span> <input type="number" id="gif-duration" value="3" min="1" style="width:60px"> sec</label>
             </div>
             <button class="action-btn" onclick="processGif()" data-i18n="btn_gif">Convert to GIF</button>
             <div class="log" id="gif-log"></div>
             <div id="gif-result"></div>
         </section>
 
-        <section id="tab-webp">
+        <section id="tab-webp" style="display:none;">
             <h2 data-i18n="h2_webp">JPG/PNG to WebP</h2>
             <div class="guide">
                 <h3 data-i18n="guide_title">📖 How to use</h3>
@@ -69,7 +71,7 @@
             <div class="log" id="webp-log"></div>
         </section>
 
-        <section id="tab-meme">
+        <section id="tab-meme" style="display:none;">
             <h2 data-i18n="h2_meme">Meme Generator</h2>
             <div class="guide">
                 <h3 data-i18n="guide_title">📖 How to use</h3>
@@ -84,12 +86,12 @@
                 <input type="text" id="meme-top" placeholder="TOP TEXT" class="meme-input" data-i18n="ph_top">
                 <input type="text" id="meme-bottom" placeholder="BOTTOM TEXT" class="meme-input" data-i18n="ph_bottom">
             </div>
-            <canvas id="meme-canvas" style="display:none;"></canvas>
+            <canvas id="meme-canvas" style="display:none; max-width: 100%; height: auto;"></canvas>
             <br>
             <button class="action-btn" onclick="downloadMeme()" data-i18n="btn_meme">Save Meme</button>
         </section>
 
-        <section id="tab-audio">
+        <section id="tab-audio" style="display:none;">
             <h2 data-i18n="h2_audio">Video to MP3 Extractor</h2>
             <div class="guide">
                 <h3 data-i18n="guide_title">📖 How to use</h3>
@@ -104,7 +106,7 @@
             <div id="audio-result"></div>
         </section>
 
-        <section id="tab-icon">
+        <section id="tab-icon" style="display:none;">
             <h2 data-i18n="h2_icon">App Icon Generator</h2>
             <div class="guide">
                 <h3 data-i18n="guide_title">📖 How to use</h3>
@@ -117,14 +119,14 @@
             <input type="file" id="icon-upload" accept="image/*">
             <button class="action-btn" onclick="processIcon()" data-i18n="btn_icon">Generate Icons</button>
             <div class="log" id="icon-log"></div>
-            <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap;"></div>
+            <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;"></div>
         </section>
     </main>
 
-    <div id="bottom-game-promo" class="game-promo-section" style="margin-bottom: 50px;">
-        <a href="https://word-master9.vercel.app/" target="_blank" class="game-link">
+    <div id="bottom-game-promo" class="game-promo-section" style="margin: 40px 0 60px 0;">
+        <a href="https://word-master9.vercel.app/" target="_blank" rel="noopener noreferrer" class="game-link">
             <div class="game-image-wrapper">
-                <img src="img/banner8.png" alt="Word Master Game" class="game-banner-img">
+                <img src="img/banner8.png" alt="Word Master Game" class="game-banner-img" loading="lazy">
                 <span class="app-badge">🎮 Play Free</span>
             </div>
         </a>
@@ -139,9 +141,10 @@
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-7272957295128241"
-                     data-ad-slot="YOUR_GOOGLE_AD_ID_HERE"
+                     data-ad-slot="1234567890" 
                      data-ad-format="rectangle"
                      data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
             <p class="ad-caption" data-i18n="ad_caption">Ad supports this free tool</p>
