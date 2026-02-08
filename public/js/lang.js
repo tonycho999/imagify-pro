@@ -3,12 +3,10 @@
 const translations = {
     // 1. 한국어 (Korean)
     ko: {
-        // [SEO Meta]
         meta_title: "Imagify Pro - 무료 온라인 미디어 변환 도구 (GIF, WebP, 아이콘)",
         meta_desc: "설치 없이 브라우저에서 바로 사용하세요. 동영상 GIF 변환, WebP 변환, 밈 제작, MP3 추출, 앱 아이콘 생성을 무료로 제공합니다.",
         meta_keywords: "GIF 만들기, WebP 변환, 동영상 MP3 추출, 아이콘 생성, 무료 온라인 도구, 밈 제작",
         
-        // [UI Text]
         subtitle: "설치 없는 무료 미디어 변환 도구",
         nav_gif: "🎥 GIF 메이커",
         nav_webp: "⚡ WebP 변환",
@@ -61,7 +59,7 @@ const translations = {
         meta_desc: "Convert Video to GIF, JPG to WebP, extract MP3, and generate App Icons. Free, secure, and serverless tools. No installation needed.",
         meta_keywords: "GIF maker, WebP converter, MP3 extractor, App icon generator, Free online tools, Meme generator",
         
-        // (영어 UI 텍스트는 HTML 기본값이므로 생략 가능하나, 완벽한 치환을 위해 유지 추천)
+        // 영어는 HTML 기본값이므로 UI 텍스트는 생략 가능하지만, 유지
     },
 
     // 3. 일본어 (Japanese)
@@ -327,7 +325,12 @@ const translations = {
     }
 };
 
-// [업데이트됨] 언어 적용 함수 (메타 태그 변경 기능 추가)
+/**
+ * [업데이트됨] 언어 적용 함수
+ * - HTML 텍스트 변경
+ * - Google Meta 태그 (Title, Desc, Keywords) 변경
+ * - Social Media Open Graph 태그 변경
+ */
 function applyLanguage() {
     // 1. 브라우저 언어 감지
     const userLang = (navigator.language || navigator.userLanguage).substring(0, 2);
@@ -338,27 +341,31 @@ function applyLanguage() {
 
     console.log(`Detected Language: ${userLang}, Applied: ${lang}`);
 
-    // [NEW] 3. 페이지 제목(Title) 및 메타 태그 업데이트
+    // 3. 페이지 제목(Title) 업데이트
     if (t.meta_title) document.title = t.meta_title;
     
-    // Description 메타 태그 업데이트
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc && t.meta_desc) {
-        metaDesc.setAttribute("content", t.meta_desc);
-    }
+    // 4. 메타 태그 업데이트 함수 (SEO & Social)
+    const updateMeta = (selector, content) => {
+        if (!content) return;
+        const element = document.querySelector(selector);
+        if (element) {
+            element.setAttribute("content", content);
+        }
+    };
 
-    // Keywords 메타 태그 업데이트 (없으면 생성)
-    let metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (!metaKeywords && t.meta_keywords) {
-        metaKeywords = document.createElement('meta');
-        metaKeywords.name = "keywords";
-        document.head.appendChild(metaKeywords);
-    }
-    if (metaKeywords && t.meta_keywords) {
-        metaKeywords.setAttribute("content", t.meta_keywords);
-    }
+    // SEO Meta Tags
+    updateMeta('meta[name="description"]', t.meta_desc);
+    updateMeta('meta[name="keywords"]', t.meta_keywords);
 
-    // 4. HTML 본문 텍스트 적용 (data-i18n)
+    // Social Media Tags (Open Graph)
+    updateMeta('meta[property="og:title"]', t.meta_title);
+    updateMeta('meta[property="og:description"]', t.meta_desc);
+
+    // Twitter Tags
+    updateMeta('meta[name="twitter:title"]', t.meta_title);
+    updateMeta('meta[name="twitter:description"]', t.meta_desc);
+
+    // 5. HTML 본문 텍스트 적용 (data-i18n)
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (t[key]) {
