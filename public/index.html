@@ -3,16 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagify Pro - All-in-One Media Tool</title>
+    <title>Imagify Pro - Free Online GIF Maker, WebP Converter & Media Tools</title>
 
+    <meta name="description" content="Imagify Pro offers free, serverless media tools. Convert Video to GIF, JPG to WebP, extract MP3 audio, generate memes, and resize app icons securely in your browser.">
+    <meta name="keywords" content="GIF maker, video to gif, webp converter, meme generator, audio extractor, app icon generator, free online tools">
     <meta name="google-site-verification" content="jpV9ytZrmyOE3ncVmwd9y67IjH7vbZ_W5f1p-c7R940" />
-    <meta name="description" content="Free online tools for GIF creation, WebP conversion, Meme generation, Audio extraction, and App Icon resizing.">
     <meta name="theme-color" content="#4F46E5">
     
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/features.css">
     
+    <style>
+        .seo-section {
+            max-width: 800px;
+            margin: 60px auto 20px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 12px;
+            color: #374151;
+            line-height: 1.6;
+        }
+        .seo-section h2 { font-size: 1.5rem; margin-bottom: 20px; color: #111; text-align: center; }
+        .seo-section h3 { font-size: 1.2rem; margin-top: 20px; margin-bottom: 10px; color: #4F46E5; }
+        .seo-section p { margin-bottom: 15px; font-size: 0.95rem; }
+        .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 0.85rem; border-top: 1px solid #e5e7eb; margin-top: 40px;}
+        .footer a { color: #4F46E5; text-decoration: none; }
+    </style>
+
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7272957295128241"
@@ -39,8 +57,8 @@
             <div class="guide">
                 <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
-                    <li data-i18n="guide_gif_1">Upload a video file.</li>
-                    <li data-i18n="guide_gif_2">(Optional) Set Start Time/Duration.</li>
+                    <li data-i18n="guide_gif_1">Upload a video file (MP4, MOV, etc).</li>
+                    <li data-i18n="guide_gif_2">Set Start Time and Duration.</li>
                     <li data-i18n="guide_gif_3">Click <b>Convert to GIF</b>.</li>
                 </ol>
             </div>
@@ -57,13 +75,12 @@
         </section>
 
         <section id="tab-webp" style="display:none;">
-            <h2 data-i18n="h2_webp">JPG/PNG to WebP</h2>
+            <h2 data-i18n="h2_webp">JPG/PNG to WebP Converter</h2>
             <div class="guide">
                 <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
                     <li data-i18n="guide_webp_1">Upload an image file.</li>
                     <li data-i18n="guide_webp_2">Click <b>Convert & Download</b>.</li>
-                    <li data-i18n="guide_webp_3">Saves space (approx. -50%).</li>
                 </ol>
             </div>
             <input type="file" id="webp-upload" accept="image/*">
@@ -72,13 +89,13 @@
         </section>
 
         <section id="tab-meme" style="display:none;">
-            <h2 data-i18n="h2_meme">Meme Generator</h2>
+            <h2 data-i18n="h2_meme">Online Meme Generator</h2>
             <div class="guide">
                 <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
-                    <li data-i18n="guide_meme_1">Upload an image.</li>
-                    <li data-i18n="guide_meme_2">Type text in Top/Bottom fields.</li>
-                    <li data-i18n="guide_meme_3">Click <b>Save Meme</b>.</li>
+                    <li data-i18n="guide_meme_1">Upload a photo.</li>
+                    <li data-i18n="guide_meme_2">Add Top/Bottom text.</li>
+                    <li data-i18n="guide_meme_3">Download your Meme.</li>
                 </ol>
             </div>
             <input type="file" id="meme-upload" accept="image/*">
@@ -86,13 +103,13 @@
                 <input type="text" id="meme-top" placeholder="TOP TEXT" class="meme-input" data-i18n="ph_top">
                 <input type="text" id="meme-bottom" placeholder="BOTTOM TEXT" class="meme-input" data-i18n="ph_bottom">
             </div>
-            <canvas id="meme-canvas" style="display:none; max-width: 100%; height: auto;"></canvas>
+            <canvas id="meme-canvas" style="display:none; max-width: 100%; height: auto; margin-top:10px;"></canvas>
             <br>
             <button class="action-btn" onclick="downloadMeme()" data-i18n="btn_meme">Save Meme</button>
         </section>
 
         <section id="tab-audio" style="display:none;">
-            <h2 data-i18n="h2_audio">Video to MP3 Extractor</h2>
+            <h2 data-i18n="h2_audio">Video to MP3 Audio Extractor</h2>
             <div class="guide">
                 <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
@@ -107,19 +124,42 @@
         </section>
 
         <section id="tab-icon" style="display:none;">
-            <h2 data-i18n="h2_icon">App Icon Generator</h2>
+            <h2 data-i18n="h2_icon">App Icon Generator (iOS/Android)</h2>
             <div class="guide">
                 <h3 data-i18n="guide_title">📖 How to use</h3>
                 <ol>
-                    <li data-i18n="guide_icon_1">Upload a square image.</li>
-                    <li data-i18n="guide_icon_2">Click <b>Generate Icons</b>.</li>
-                    <li data-i18n="guide_icon_3">Get 512, 192, 180px icons.</li>
+                    <li data-i18n="guide_icon_1">Upload a square image (1024x1024 recommended).</li>
+                    <li data-i18n="guide_icon_2">Generate icons for App Stores.</li>
                 </ol>
             </div>
             <input type="file" id="icon-upload" accept="image/*">
             <button class="action-btn" onclick="processIcon()" data-i18n="btn_icon">Generate Icons</button>
             <div class="log" id="icon-log"></div>
-            <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;"></div>
+            <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;"></div>
+        </section>
+
+        <section class="seo-section">
+            <h2>Why Choose Imagify Pro?</h2>
+            
+            <article>
+                <h3>🛡️ 100% Client-Side Secure Processing</h3>
+                <p>Unlike other online converters that upload your files to a remote server, <strong>Imagify Pro processes all your media directly in your browser</strong>. This means your personal videos, photos, and audio files never leave your device. It is the safest way to convert media online, ensuring total privacy and data security.</p>
+            </article>
+
+            <article>
+                <h3>🚀 Fast & Efficient WebP Conversion</h3>
+                <p>Website speed is crucial for SEO. Our <strong>WebP Converter</strong> allows you to transform heavy JPG and PNG images into the modern WebP format. This can reduce file size by up to 50% without losing quality, helping your websites load faster and rank higher on Google.</p>
+            </article>
+
+            <article>
+                <h3>🎥 High-Quality Video to GIF Maker</h3>
+                <p>Create engaging animated GIFs from your videos instantly. Whether you need a reaction GIF for social media or a tutorial snippet, our <strong>Video to GIF tool</strong> gives you control over the start time and duration, producing smooth animations without any watermarks.</p>
+            </article>
+
+            <article>
+                <h3>🎵 Instant Audio Extraction</h3>
+                <p>Need the soundtrack from a video? Our <strong>Video to MP3 Extractor</strong> uses powerful FFmpeg technology to strip audio from video files in seconds. Perfect for saving lectures, music, or sound effects from your video library.</p>
+            </article>
         </section>
     </main>
 
@@ -132,11 +172,19 @@
         </a>
     </div>
 
+    <footer class="footer">
+        <p>&copy; 2024 Imagify Pro. All rights reserved.</p>
+        <p>
+            <a href="privacy-policy.html">Privacy Policy</a> | 
+            <a href="terms.html">Terms of Service</a> | 
+            <a href="mailto:contact@imagifypro.com">Contact</a>
+        </p>
+    </footer>
+
     <div id="ad-overlay" class="ad-overlay" style="display:none;">
         <div class="ad-modal">
             <h3>⏳ Advertisement</h3>
             <p id="ad-timer-txt" data-i18n="ad_wait">Please wait just a moment.</p>
-            
             <div class="ad-box">
                 <ins class="adsbygoogle"
                      style="display:block"
@@ -146,7 +194,6 @@
                      data-full-width-responsive="true"></ins>
                 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
-
             <p class="ad-caption" data-i18n="ad_caption">Ad supports this free tool</p>
             <button id="ad-close-btn" class="close-btn" disabled data-i18n="ad_close_btn">Wait 5s...</button>
         </div>
@@ -156,7 +203,6 @@
         <div class="ad-modal" style="max-width: 450px;">
             <div style="font-size: 40px; margin-bottom: 10px;">👋</div>
             <h3 data-i18n="welcome_title">Welcome to Imagify Pro!</h3>
-            
             <div style="background:#eef2ff; padding:15px; border-radius:10px; margin:20px 0; text-align:left;">
                 <p style="margin:5px 0; font-weight:bold; color:#4338ca;">🚀 Free Policy:</p>
                 <ul style="margin:5px 0 5px 20px; color:#555; font-size:14px;">
@@ -165,7 +211,6 @@
                     <li data-i18n="welcome_desc_3">No more ads during your free time!</li>
                 </ul>
             </div>
-
             <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
                 <button onclick="startWithAd()" class="action-btn" style="margin:0; background:#4F46E5; flex:1;" data-i18n="btn_watch">
                     📺 Watch Ad & Start
