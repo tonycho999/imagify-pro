@@ -46,6 +46,21 @@
         .seo-section p { margin-bottom: 15px; font-size: 0.95rem; }
         .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 0.85rem; border-top: 1px solid #e5e7eb; margin-top: 40px;}
         .footer a { color: #4F46E5; text-decoration: none; }
+        
+        /* 오버레이 강제 적용을 위한 스타일 보강 */
+        #welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: flex; /* 초기값 flex로 설정하여 로딩 시 바로 보이게 함 */
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
     </style>
 
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
@@ -56,6 +71,9 @@
     <header>
         <h1>✨ Imagify Pro</h1>
         <p data-i18n="subtitle">Free, Secure, Serverless Media Tools</p>
+        <div id="access-timer" style="display:none; background:#4F46E5; color:white; padding:5px 10px; border-radius:20px; font-size:0.8rem; margin-top:10px;">
+            ⏳ Free Access: <span id="time-remaining">00:00</span>
+        </div>
     </header>
 
     <nav class="nav" role="tablist">
@@ -196,44 +214,24 @@
         </p>
     </footer>
 
-    <div id="ad-overlay" class="ad-overlay" style="display:none;">
-        <div class="ad-modal">
-            <h3>⏳ Advertisement</h3>
-            <p id="ad-timer-txt" data-i18n="ad_wait">Please wait just a moment.</p>
-            <div class="ad-box">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-7272957295128241"
-                     data-ad-slot="YOUR_AD_SLOT_ID" 
-                     data-ad-format="rectangle"
-                     data-full-width-responsive="true"></ins>
-            </div>
-            <p class="ad-caption" data-i18n="ad_caption">Ad supports this free tool</p>
-            <button id="ad-close-btn" class="close-btn" disabled data-i18n="ad_close_btn">Wait 5s...</button>
-        </div>
-    </div>
-
-    <div id="welcome-overlay" class="ad-overlay" style="display:none;">
+    <div id="welcome-overlay" class="ad-overlay" style="display:flex;">
         <div class="ad-modal" style="max-width: 450px;">
             <div style="font-size: 40px; margin-bottom: 10px;">👋</div>
             <h3 data-i18n="welcome_title">Welcome to Imagify Pro!</h3>
             <div style="background:#eef2ff; padding:15px; border-radius:10px; margin:20px 0; text-align:left;">
-                <p style="margin:5px 0; font-weight:bold; color:#4338ca;">🚀 Free Policy:</p>
+                <p style="margin:5px 0; font-weight:bold; color:#4338ca;">🚀 무료 이용 정책 (Free Policy):</p>
                 <ul style="margin:5px 0 5px 20px; color:#555; font-size:14px;">
-                    <li data-i18n="welcome_desc_1">Watch <b style="color:#e11d48">1 short ad</b> now.</li>
-                    <li data-i18n="welcome_desc_2">Get <b style="color:#16a34a">10 minutes</b> of unlimited free access.</li>
-                    <li data-i18n="welcome_desc_3">No more ads during your free time!</li>
+                    <li data-i18n="welcome_desc_1">광고 <b>1회 시청</b> 후 이용 가능합니다.</li>
+                    <li data-i18n="welcome_desc_2">시청 후 <b style="color:#16a34a">10분간</b> 모든 기능을 제한 없이 무료로 사용하세요.</li>
+                    <li data-i18n="welcome_desc_3">10분이 지나면 다시 광고 창이 뜹니다.</li>
                 </ul>
             </div>
             <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                <button onclick="startWithAd()" class="action-btn" style="margin:0; background:#4F46E5; flex:1;" data-i18n="btn_watch">
-                    📺 Watch Ad & Start
-                </button>
-                <button onclick="closeWelcome()" class="action-btn" style="margin:0; background:#9ca3af; flex:1;" data-i18n="btn_look">
-                    Just look around
+                <button onclick="watchAdAndStart()" class="action-btn" style="margin:0; background:#4F46E5; width: 100%;" data-i18n="btn_watch">
+                    📺 광고 보고 시작하기 (10분 무료)
                 </button>
             </div>
-        </div>
+            </div>
     </div>
 
     <script src="js/lang.js"></script>
@@ -243,6 +241,69 @@
     <script src="js/meme.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/icon.js"></script>
+
+    <script>
+        // 광고 링크 및 설정
+        const AD_URL = "https://www.effectivegatecpm.com/sixxckcc?key=4eb969603869537299f01f0be074e152";
+        const FREE_ACCESS_MINUTES = 10;
+        const FREE_ACCESS_MS = FREE_ACCESS_MINUTES * 60 * 1000;
+
+        // HTML 요소 참조
+        const overlay = document.getElementById('welcome-overlay');
+        const timerDisplay = document.getElementById('access-timer');
+        const timeRemainingSpan = document.getElementById('time-remaining');
+
+        // 페이지 로드 시 및 주기적 체크
+        function checkAccess() {
+            const expiryTime = localStorage.getItem('accessExpiry');
+            const now = Date.now();
+
+            if (expiryTime && now < parseInt(expiryTime)) {
+                // 유효 시간 남음: 오버레이 숨김
+                if (overlay.style.display !== 'none') {
+                    overlay.style.display = 'none';
+                }
+                // 남은 시간 표시
+                showTimer(parseInt(expiryTime) - now);
+            } else {
+                // 시간 만료됨: 오버레이 표시 (강제 잠금)
+                if (overlay.style.display !== 'flex') {
+                    overlay.style.display = 'flex';
+                }
+                // 타이머 숨김
+                timerDisplay.style.display = 'none';
+            }
+        }
+
+        // 남은 시간 UI 업데이트
+        function showTimer(msLeft) {
+            timerDisplay.style.display = 'inline-block';
+            const totalSeconds = Math.floor(msLeft / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            timeRemainingSpan.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        // 광고 버튼 클릭 시 실행
+        function watchAdAndStart() {
+            // 1. 광고 새 창 열기
+            window.open(AD_URL, '_blank');
+
+            // 2. 만료 시간 설정 (현재 시간 + 10분)
+            const now = Date.now();
+            const newExpiry = now + FREE_ACCESS_MS;
+            localStorage.setItem('accessExpiry', newExpiry);
+
+            // 3. 즉시 상태 체크하여 오버레이 닫기
+            checkAccess();
+        }
+
+        // 1초마다 상태 체크 (시간 만료 시 자동 잠금)
+        setInterval(checkAccess, 1000);
+
+        // 초기 실행
+        checkAccess();
+    </script>
 
 </body>
 </html>
