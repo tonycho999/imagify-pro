@@ -196,13 +196,20 @@
         </section>
     </main>
 
-    <div id="bottom-game-promo" class="game-promo-section" style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 40px 0 60px 0;">
-        <a href="https://word-master9.vercel.app/" target="_blank" rel="noopener noreferrer" class="game-link">
-            <div class="game-image-wrapper">
-                <img src="img/banner8.png" alt="Word Master Game" class="game-banner-img" loading="lazy">
-                <span class="app-badge">🎮 Play Free</span>
-            </div>
-        </a>
+    <div id="bottom-ad-banner" style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 40px 0 60px 0; text-align: center;">
+        <div>
+            <p style="color: #999; font-size: 0.75rem; margin-bottom: 5px;">SPONSORED</p>
+            <script type="text/javascript">
+                atOptions = {
+                    'key' : 'b4d2929ccb28cfa1dbcec381a676929b',
+                    'format' : 'iframe',
+                    'height' : 250,
+                    'width' : 300,
+                    'params' : {}
+                };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/b4d2929ccb28cfa1dbcec381a676929b/invoke.js"></script>
+        </div>
     </div>
 
     <footer class="footer">
@@ -221,17 +228,20 @@
             <div style="background:#eef2ff; padding:15px; border-radius:10px; margin:20px 0; text-align:left;">
                 <p style="margin:5px 0; font-weight:bold; color:#4338ca;">🚀 무료 이용 정책 (Free Policy):</p>
                 <ul style="margin:5px 0 5px 20px; color:#555; font-size:14px;">
-                    <li data-i18n="welcome_desc_1">광고 <b>1회 시청</b> 후 이용 가능합니다.</li>
-                    <li data-i18n="welcome_desc_2">시청 후 <b style="color:#16a34a">10분간</b> 모든 기능을 제한 없이 무료로 사용하세요.</li>
-                    <li data-i18n="welcome_desc_3">10분이 지나면 다시 광고 창이 뜹니다.</li>
+                    <li>광고 시청 시: <b style="color:#16a34a">10분간 무제한</b> 이용</li>
+                    <li>둘러보기 시: <b style="color:#6b7280">1분간 맛보기</b> 이용</li>
+                    <li>시간이 지나면 다시 이 창이 뜹니다.</li>
                 </ul>
             </div>
             <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                <button onclick="watchAdAndStart()" class="action-btn" style="margin:0; background:#4F46E5; width: 100%;" data-i18n="btn_watch">
-                    📺 광고 보고 시작하기 (10분 무료)
+                <button onclick="watchAdAndStart()" class="action-btn" style="margin:0; background:#4F46E5; flex:1;" data-i18n="btn_watch">
+                    📺 광고 보고 시작<br><small>(10분 무료)</small>
+                </button>
+                <button onclick="justLookAround()" class="action-btn" style="margin:0; background:#9ca3af; flex:1;" data-i18n="btn_look">
+                    👀 둘러보기<br><small>(1분 무료)</small>
                 </button>
             </div>
-            </div>
+        </div>
     </div>
 
     <script src="js/lang.js"></script>
@@ -243,65 +253,70 @@
     <script src="js/icon.js"></script>
 
     <script>
-        // 광고 링크 및 설정
+        // 설정값
         const AD_URL = "https://www.effectivegatecpm.com/sixxckcc?key=4eb969603869537299f01f0be074e152";
-        const FREE_ACCESS_MINUTES = 10;
-        const FREE_ACCESS_MS = FREE_ACCESS_MINUTES * 60 * 1000;
+        const TIME_AD_WATCH = 10 * 60 * 1000; // 광고 시청 시 10분
+        const TIME_PREVIEW = 1 * 60 * 1000;   // 둘러보기 시 1분
 
-        // HTML 요소 참조
+        // HTML 요소
         const overlay = document.getElementById('welcome-overlay');
         const timerDisplay = document.getElementById('access-timer');
         const timeRemainingSpan = document.getElementById('time-remaining');
 
-        // 페이지 로드 시 및 주기적 체크
+        // 1. 시간 체크 함수 (1초마다 실행됨)
         function checkAccess() {
             const expiryTime = localStorage.getItem('accessExpiry');
             const now = Date.now();
 
             if (expiryTime && now < parseInt(expiryTime)) {
-                // 유효 시간 남음: 오버레이 숨김
+                // [접속 허용] 시간이 남아있음
                 if (overlay.style.display !== 'none') {
-                    overlay.style.display = 'none';
+                    overlay.style.display = 'none'; // 팝업 닫기
                 }
-                // 남은 시간 표시
-                showTimer(parseInt(expiryTime) - now);
+                showTimer(parseInt(expiryTime) - now); // 타이머 갱신
             } else {
-                // 시간 만료됨: 오버레이 표시 (강제 잠금)
+                // [접속 차단] 시간 만료됨
                 if (overlay.style.display !== 'flex') {
-                    overlay.style.display = 'flex';
+                    overlay.style.display = 'flex'; // 팝업 열기
                 }
-                // 타이머 숨김
-                timerDisplay.style.display = 'none';
+                if(timerDisplay) timerDisplay.style.display = 'none'; // 타이머 숨김
             }
         }
 
-        // 남은 시간 UI 업데이트
+        // 2. 타이머 UI 표시
         function showTimer(msLeft) {
-            timerDisplay.style.display = 'inline-block';
-            const totalSeconds = Math.floor(msLeft / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            timeRemainingSpan.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            if(timerDisplay) timerDisplay.style.display = 'inline-block';
+            if(timeRemainingSpan) {
+                const totalSeconds = Math.floor(msLeft / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                timeRemainingSpan.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
         }
 
-        // 광고 버튼 클릭 시 실행
+        // 3. 기능: 광고 보고 10분 시작
         function watchAdAndStart() {
-            // 1. 광고 새 창 열기
-            window.open(AD_URL, '_blank');
-
-            // 2. 만료 시간 설정 (현재 시간 + 10분)
-            const now = Date.now();
-            const newExpiry = now + FREE_ACCESS_MS;
-            localStorage.setItem('accessExpiry', newExpiry);
-
-            // 3. 즉시 상태 체크하여 오버레이 닫기
-            checkAccess();
+            window.open(AD_URL, '_blank'); // 광고 새창
+            grantAccess(TIME_AD_WATCH);    // 10분 부여
         }
 
-        // 1초마다 상태 체크 (시간 만료 시 자동 잠금)
-        setInterval(checkAccess, 1000);
+        // 4. 기능: 그냥 둘러보기 (1분 시작)
+        function justLookAround() {
+            grantAccess(TIME_PREVIEW);     // 1분 부여
+        }
 
-        // 초기 실행
+        // 공통: 시간 부여 및 저장
+        function grantAccess(duration) {
+            const now = Date.now();
+            const newExpiry = now + duration;
+            localStorage.setItem('accessExpiry', newExpiry);
+            checkAccess(); // 즉시 상태 업데이트
+        }
+
+        // 1초마다 체크 인터벌 실행
+        setInterval(checkAccess, 1000);
+        
+        // 페이지 로드 시 최초 1회 실행
         checkAccess();
     </script>
 
