@@ -113,7 +113,7 @@
                 <label><span data-i18n="label_start">Start:</span> <input type="number" id="gif-start" value="0" min="0" style="width:60px"> sec</label>
                 <label><span data-i18n="label_duration">Duration:</span> <input type="number" id="gif-duration" value="3" min="1" style="width:60px"> sec</label>
             </div>
-            <button class="action-btn" onclick="processGif()" data-i18n="btn_gif">Convert to GIF</button>
+            <button class="action-btn" onclick="processGif(); autoReset('gif-upload')" data-i18n="btn_gif">Convert to GIF</button>
             <div class="log" id="gif-log"></div>
             <div id="gif-result"></div>
         </section>
@@ -128,7 +128,7 @@
                 </ol>
             </div>
             <input type="file" id="webp-upload" accept="image/*">
-            <button class="action-btn" onclick="processWebp()" data-i18n="btn_webp">Convert & Download</button>
+            <button class="action-btn" onclick="processWebp(); autoReset('webp-upload')" data-i18n="btn_webp">Convert & Download</button>
             <div class="log" id="webp-log"></div>
         </section>
 
@@ -149,7 +149,7 @@
             </div>
             <canvas id="meme-canvas" style="display:none; max-width: 100%; height: auto; margin-top:10px;"></canvas>
             <br>
-            <button class="action-btn" onclick="downloadMeme()" data-i18n="btn_meme">Save Meme</button>
+            <button class="action-btn" onclick="downloadMeme(); autoReset('meme-upload')" data-i18n="btn_meme">Save Meme</button>
         </section>
 
         <section id="tab-audio" style="display:none;">
@@ -162,7 +162,7 @@
                 </ol>
             </div>
             <input type="file" id="audio-upload" accept="video/*">
-            <button class="action-btn" onclick="processAudio()" data-i18n="btn_audio">Extract MP3</button>
+            <button class="action-btn" onclick="processAudio(); autoReset('audio-upload')" data-i18n="btn_audio">Extract MP3</button>
             <div class="log" id="audio-log"></div>
             <div id="audio-result"></div>
         </section>
@@ -177,7 +177,7 @@
                 </ol>
             </div>
             <input type="file" id="icon-upload" accept="image/*">
-            <button class="action-btn" onclick="processIcon()" data-i18n="btn_icon">Generate Icons</button>
+            <button class="action-btn" onclick="processIcon(); autoReset('icon-upload')" data-i18n="btn_icon">Generate Icons</button>
             <div class="log" id="icon-log"></div>
             <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;"></div>
         </section>
@@ -250,19 +250,21 @@
             <div style="font-size: 40px; margin-bottom: 10px;">👋</div>
             <h3 data-i18n="welcome_title">Welcome to Imagify Pro!</h3>
             <div style="background:#eef2ff; padding:15px; border-radius:10px; margin:20px 0; text-align:left;">
-                <p style="margin:5px 0; font-weight:bold; color:#4338ca;">🚀 무료 이용 정책 (Free Policy):</p>
+                <p style="margin:5px 0; font-weight:bold; color:#4338ca;" data-i18n="policy_title">🚀 Free Access Policy:</p>
                 <ul style="margin:5px 0 5px 20px; color:#555; font-size:14px;">
-                    <li>광고 시청 시: <b style="color:#16a34a">10분간 무제한</b> 이용</li>
-                    <li>둘러보기 시: <b style="color:#6b7280">1분간 맛보기</b> 이용</li>
-                    <li>시간이 지나면 다시 이 창이 뜹니다.</li>
+                    <li data-i18n="policy_1">Watch Ad: <b style="color:#16a34a">10 min unlimited</b></li>
+                    <li data-i18n="policy_2">Preview: <b style="color:#6b7280">1 min trial</b></li>
+                    <li data-i18n="policy_3">Window reappears after time expires.</li>
                 </ul>
             </div>
             <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                <button onclick="watchAdAndStart()" class="action-btn" style="margin:0; background:#4F46E5; flex:1;" data-i18n="btn_watch">
-                    📺 광고 보고 시작<br><small>(10분 무료)</small>
+                <button onclick="watchAdAndStart()" class="action-btn" style="margin:0; background:#4F46E5; flex:1;">
+                    <span data-i18n="btn_watch">📺 Watch Ad</span><br>
+                    <small data-i18n="btn_watch_sub">(10 min free)</small>
                 </button>
-                <button onclick="justLookAround()" class="action-btn" style="margin:0; background:#9ca3af; flex:1;" data-i18n="btn_look">
-                    👀 둘러보기<br><small>(1분 무료)</small>
+                <button onclick="justLookAround()" class="action-btn" style="margin:0; background:#9ca3af; flex:1;">
+                    <span data-i18n="btn_look">👀 Look Around</span><br>
+                    <small data-i18n="btn_look_sub">(1 min free)</small>
                 </button>
             </div>
         </div>
@@ -279,7 +281,7 @@
     <script>
         const AD_URL = "https://www.effectivegatecpm.com/sixxckcc?key=4eb969603869537299f01f0be074e152";
         const TIME_AD_WATCH = 10 * 60 * 1000; 
-        const TIME_PREVIEW = 1 * 60 * 1000;   
+        const TIME_PREVIEW = 1 * 60 * 1000;    
 
         const overlay = document.getElementById('welcome-overlay');
         const timerDisplay = document.getElementById('access-timer');
@@ -329,6 +331,18 @@
             const newExpiry = now + duration;
             localStorage.setItem('accessExpiry', newExpiry);
             checkAccess();
+        }
+
+        /* [추가됨] 파일 입력 초기화 스크립트 */
+        function autoReset(inputId) {
+            // 파일을 읽는 시간이 필요할 수 있으므로 1초 뒤에 input 값을 비워줌
+            setTimeout(() => {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.value = ''; // 값 초기화
+                    console.log('Input reset completed:', inputId);
+                }
+            }, 1000);
         }
 
         setInterval(checkAccess, 1000);
