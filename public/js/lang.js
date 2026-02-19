@@ -1,4 +1,4 @@
-/* lang.js : 다국어 및 SEO 메타데이터 관리 */
+/* lang.js */
 
 const translations = {
     // 1. 한국어 (Korean)
@@ -42,15 +42,17 @@ const translations = {
         guide_icon_2: "<b>아이콘 만들기</b>를 누르세요.",
         guide_icon_3: "512, 192, 180px 아이콘이 생성됩니다.",
         btn_icon: "아이콘 만들기",
-        ad_wait: "잠시만 기다려주세요.",
-        ad_close_btn: "5초 대기...",
-        ad_caption: "광고 시청 후 10분간 무료 이용",
+        
+        // 오버레이 다국어 추가
         welcome_title: "환영합니다!",
-        welcome_desc_1: "짧은 광고 <b>1개</b>만 시청하세요.",
-        welcome_desc_2: "<b>10분간</b> 무료로 이용하세요.",
-        welcome_desc_3: "무료 시간에는 광고가 나오지 않습니다.",
-        btn_watch: "📺 광고 보고 시작하기",
-        btn_look: "그냥 둘러보기"
+        policy_title: "🚀 무료 이용 정책:",
+        policy_1: "광고 시청 시: <b style='color:#16a34a'>10분간 무제한</b> 이용",
+        policy_2: "둘러보기 시: <b style='color:#6b7280'>1분간 맛보기</b> 이용",
+        policy_3: "시간이 지나면 다시 이 창이 뜹니다.",
+        btn_watch: "📺 광고 보고 시작",
+        btn_watch_sub: "(10분 무료)",
+        btn_look: "👀 둘러보기",
+        btn_look_sub: "(1분 무료)"
     },
 
     // 2. 영어 (English)
@@ -59,7 +61,51 @@ const translations = {
         meta_desc: "Convert Video to GIF, JPG to WebP, extract MP3, and generate App Icons. Free, secure, and serverless tools. No installation needed.",
         meta_keywords: "GIF maker, WebP converter, MP3 extractor, App icon generator, Free online tools, Meme generator",
         
-        // 영어는 HTML 기본값이므로 UI 텍스트는 생략 가능하지만, 유지
+        // UI Translations
+        subtitle: "Free, Secure, Serverless Media Tools",
+        nav_gif: "🎥 GIF Maker",
+        nav_webp: "⚡ WebP Convert",
+        nav_meme: "🤣 Meme Gen",
+        nav_audio: "🎵 Audio Extract",
+        nav_icon: "📱 Icon Gen",
+        h2_gif: "Video to GIF Converter",
+        guide_title: "📖 How to use",
+        guide_gif_1: "Upload a video file (MP4, MOV).",
+        guide_gif_2: "Set Start Time and Duration.",
+        guide_gif_3: "Click <b>Convert to GIF</b>.",
+        label_start: "Start:",
+        label_duration: "Duration:",
+        btn_gif: "Convert to GIF",
+        h2_webp: "JPG/PNG to WebP Converter",
+        guide_webp_1: "Upload an image file.",
+        guide_webp_2: "Click <b>Convert & Download</b>.",
+        btn_webp: "Convert & Download",
+        h2_meme: "Online Meme Generator",
+        guide_meme_1: "Upload a photo.",
+        guide_meme_2: "Add Top/Bottom text.",
+        guide_meme_3: "Click <b>Save Meme</b>.",
+        ph_top: "TOP TEXT",
+        ph_bottom: "BOTTOM TEXT",
+        btn_meme: "Save Meme",
+        h2_audio: "Video to MP3 Extractor",
+        guide_audio_1: "Upload a video file.",
+        guide_audio_2: "Click <b>Extract MP3</b>.",
+        btn_audio: "Extract MP3",
+        h2_icon: "App Icon Generator",
+        guide_icon_1: "Upload a square image.",
+        guide_icon_2: "Click <b>Generate Icons</b>.",
+        btn_icon: "Generate Icons",
+
+        // Overlay Translations
+        welcome_title: "Welcome to Imagify Pro!",
+        policy_title: "🚀 Free Access Policy:",
+        policy_1: "Watch Ad: <b style='color:#16a34a'>10 Mins Unlimited</b>",
+        policy_2: "Preview: <b style='color:#6b7280'>1 Min Trial</b>",
+        policy_3: "This window appears again after time expires.",
+        btn_watch: "📺 Watch Ad & Start",
+        btn_watch_sub: "(10 Mins Free)",
+        btn_look: "👀 Just Look Around",
+        btn_look_sub: "(1 Min Free)"
     },
 
     // 3. 일본어 (Japanese)
@@ -85,7 +131,6 @@ const translations = {
         h2_webp: "JPG/PNG → WebP 変換",
         guide_webp_1: "画像ファイルをアップロードします。",
         guide_webp_2: "<b>変換してダウンロード</b>をクリック。",
-        guide_webp_3: "画質そのままで容量50%削減。",
         btn_webp: "変換してダウンロード",
         h2_meme: "ミームジェネレーター",
         guide_meme_1: "画像をアップロード。",
@@ -101,17 +146,18 @@ const translations = {
         h2_icon: "アプリアイコン作成",
         guide_icon_1: "正方形の画像をアップロード。",
         guide_icon_2: "<b>アイコン作成</b>をクリック。",
-        guide_icon_3: "512, 192, 180px アイコンが作成されます。",
         btn_icon: "アイコン作成",
-        ad_wait: "少々お待ちください。",
-        ad_close_btn: "5秒待機...",
-        ad_caption: "広告を見ると10分間無料",
+
+        // Overlay Translations
         welcome_title: "Imagify Proへようこそ！",
-        welcome_desc_1: "短い広告を<b>1つ</b>見てください。",
-        welcome_desc_2: "<b>10分間</b>無料で使い放題。",
-        welcome_desc_3: "無料時間は広告が出ません。",
+        policy_title: "🚀 無料利用ポリシー:",
+        policy_1: "広告を見る: <b style='color:#16a34a'>10分間使い放題</b>",
+        policy_2: "プレビュー: <b style='color:#6b7280'>1分間お試し</b>",
+        policy_3: "時間が過ぎるとこのウィンドウが再表示されます。",
         btn_watch: "📺 広告を見て開始",
-        btn_look: "見て回る"
+        btn_watch_sub: "(10分無料)",
+        btn_look: "👀 見て回る",
+        btn_look_sub: "(1分無料)"
     },
 
     // 4. 중국어 간체 (Chinese Simplified)
@@ -119,7 +165,6 @@ const translations = {
         meta_title: "Imagify Pro - 免费在线媒体工具 (GIF, WebP, 图标生成)",
         meta_desc: "视频转GIF、图片转WebP、表情包制作、MP3提取及App图标生成。无需安装，浏览器内直接运行，安全快捷。",
         meta_keywords: "GIF制作, WebP转换, MP3提取, 图标生成, 在线工具, 表情包制作",
-        
         subtitle: "免费、安全、无需安装的媒体工具",
         nav_gif: "🎥 GIF制作",
         nav_webp: "⚡ WebP转换",
@@ -138,10 +183,17 @@ const translations = {
         btn_audio: "提取MP3",
         h2_icon: "应用图标生成",
         btn_icon: "生成图标",
-        ad_wait: "请稍候。",
+
+        // Overlay Translations
         welcome_title: "欢迎来到 Imagify Pro！",
+        policy_title: "🚀 免费使用政策：",
+        policy_1: "观看广告：<b style='color:#16a34a'>10分钟无限使用</b>",
+        policy_2: "预览模式：<b style='color:#6b7280'>1分钟试用</b>",
+        policy_3: "时间结束后，此窗口将再次出现。",
         btn_watch: "📺 观看广告并开始",
-        btn_look: "随便看看"
+        btn_watch_sub: "(10分钟免费)",
+        btn_look: "👀 随便看看",
+        btn_look_sub: "(1分钟免费)"
     },
 
     // 5. 스페인어 (Spanish)
@@ -149,7 +201,6 @@ const translations = {
         meta_title: "Imagify Pro - Herramientas Multimedia Gratis (GIF, WebP)",
         meta_desc: "Convertidor de video a GIF, JPG a WebP, generador de memes, extracción de MP3 e iconos de App. Gratis, seguro y sin instalación.",
         meta_keywords: "Crear GIF, Convertir WebP, Extraer MP3, Generador de iconos, Herramientas online, Memes",
-        
         subtitle: "Herramientas multimedia gratuitas sin instalación",
         nav_gif: "🎥 Creador GIF",
         nav_webp: "⚡ Convertir WebP",
@@ -168,10 +219,17 @@ const translations = {
         btn_audio: "Extraer MP3",
         h2_icon: "Generador de Iconos",
         btn_icon: "Generar Iconos",
-        ad_wait: "Por favor espere.",
+
+        // Overlay Translations
         welcome_title: "¡Bienvenido a Imagify Pro!",
+        policy_title: "🚀 Política de Acceso Gratuito:",
+        policy_1: "Ver anuncio: <b style='color:#16a34a'>10 min ilimitados</b>",
+        policy_2: "Vista previa: <b style='color:#6b7280'>1 min de prueba</b>",
+        policy_3: "Esta ventana aparecerá de nuevo al finalizar.",
         btn_watch: "📺 Ver anuncio y empezar",
-        btn_look: "Solo mirar"
+        btn_watch_sub: "(10 min gratis)",
+        btn_look: "👀 Solo mirar",
+        btn_look_sub: "(1 min gratis)"
     },
 
     // 6. 프랑스어 (French)
@@ -179,7 +237,6 @@ const translations = {
         meta_title: "Imagify Pro - Outils Médias Gratuits (GIF, WebP, Icônes)",
         meta_desc: "Convertissez vidéo en GIF, images en WebP, créez des mèmes, extrayez des MP3 et générez des icônes. Gratuit, sécurisé, sans installation.",
         meta_keywords: "Créer GIF, Convertisseur WebP, Extraire MP3, Générateur d'icônes, Outils gratuits, Mèmes",
-        
         subtitle: "Outils multimédias gratuits sans installation",
         nav_gif: "🎥 Créer GIF",
         nav_webp: "⚡ Convertir WebP",
@@ -198,10 +255,17 @@ const translations = {
         btn_audio: "Extraire MP3",
         h2_icon: "Générateur d'Icônes",
         btn_icon: "Générer Icônes",
-        ad_wait: "Veuillez patienter.",
+
+        // Overlay Translations
         welcome_title: "Bienvenue sur Imagify Pro !",
+        policy_title: "🚀 Politique d'accès gratuit :",
+        policy_1: "Voir pub : <b style='color:#16a34a'>10 min illimitées</b>",
+        policy_2: "Aperçu : <b style='color:#6b7280'>1 min d'essai</b>",
+        policy_3: "Cette fenêtre réapparaîtra à la fin du temps.",
         btn_watch: "📺 Voir la pub et commencer",
-        btn_look: "Juste regarder"
+        btn_watch_sub: "(10 min gratuit)",
+        btn_look: "👀 Juste regarder",
+        btn_look_sub: "(1 min gratuit)"
     },
 
     // 7. 독일어 (German)
@@ -209,7 +273,6 @@ const translations = {
         meta_title: "Imagify Pro - Kostenlose Medien-Tools (GIF, WebP, Icons)",
         meta_desc: "Video zu GIF, WebP-Konverter, Meme-Generator, MP3 extrahieren und App-Icons erstellen. Kostenlos, sicher und ohne Installation.",
         meta_keywords: "GIF erstellen, WebP umwandeln, MP3 extrahieren, Icon Generator, Online Tools, Meme",
-        
         subtitle: "Kostenlose Medien-Tools ohne Installation",
         nav_gif: "🎥 GIF-Maker",
         nav_webp: "⚡ WebP-Konverter",
@@ -228,10 +291,17 @@ const translations = {
         btn_audio: "MP3 extrahieren",
         h2_icon: "App-Icon Generator",
         btn_icon: "Icons erstellen",
-        ad_wait: "Bitte warten.",
+
+        // Overlay Translations
         welcome_title: "Willkommen bei Imagify Pro!",
+        policy_title: "🚀 Kostenlose Nutzung:",
+        policy_1: "Werbung ansehen: <b style='color:#16a34a'>10 Min unbegrenzt</b>",
+        policy_2: "Vorschau: <b style='color:#6b7280'>1 Min Test</b>",
+        policy_3: "Dieses Fenster erscheint nach Ablauf erneut.",
         btn_watch: "📺 Anzeige ansehen & starten",
-        btn_look: "Nur umschauen"
+        btn_watch_sub: "(10 Min kostenlos)",
+        btn_look: "👀 Nur umschauen",
+        btn_look_sub: "(1 Min kostenlos)"
     },
 
     // 8. 러시아어 (Russian)
@@ -239,7 +309,6 @@ const translations = {
         meta_title: "Imagify Pro - Бесплатные медиа-инструменты (GIF, WebP)",
         meta_desc: "Конвертер видео в GIF, JPG в WebP, создание мемов, извлечение MP3 и генерация иконок. Бесплатно, безопасно, без установки.",
         meta_keywords: "Создать GIF, Конвертер WebP, Извлечь MP3, Генератор иконок, Онлайн инструменты, Мемы",
-        
         subtitle: "Бесплатные медиа-инструменты",
         nav_gif: "🎥 GIF Мейкер",
         nav_webp: "⚡ WebP Конвертер",
@@ -258,10 +327,17 @@ const translations = {
         btn_audio: "Извлечь MP3",
         h2_icon: "Генератор иконок",
         btn_icon: "Создать иконки",
-        ad_wait: "Пожалуйста, подождите.",
+
+        // Overlay Translations
         welcome_title: "Добро пожаловать в Imagify Pro!",
+        policy_title: "🚀 Правила доступа:",
+        policy_1: "Смотреть рекламу: <b style='color:#16a34a'>10 мин безлимит</b>",
+        policy_2: "Предпросмотр: <b style='color:#6b7280'>1 мин тест</b>",
+        policy_3: "Это окно появится снова после истечения времени.",
         btn_watch: "📺 Смотреть рекламу",
-        btn_look: "Просто посмотреть"
+        btn_watch_sub: "(10 мин бесплатно)",
+        btn_look: "👀 Просто посмотреть",
+        btn_look_sub: "(1 мин бесплатно)"
     },
 
     // 9. 포르투갈어 (Portuguese)
@@ -269,7 +345,6 @@ const translations = {
         meta_title: "Imagify Pro - Ferramentas de Mídia Grátis (GIF, WebP)",
         meta_desc: "Conversor de vídeo para GIF, WebP, criador de memes, extração de MP3 e ícones de aplicativos. Gratuito, seguro e sem instalação.",
         meta_keywords: "Criar GIF, Converter WebP, Extrair MP3, Gerador de ícones, Ferramentas online, Memes",
-        
         subtitle: "Ferramentas de mídia gratuitas",
         nav_gif: "🎥 Criador de GIF",
         nav_webp: "⚡ Converter WebP",
@@ -288,10 +363,17 @@ const translations = {
         btn_audio: "Extrair MP3",
         h2_icon: "Gerador de Ícones",
         btn_icon: "Gerar Ícones",
-        ad_wait: "Por favor, aguarde.",
+
+        // Overlay Translations
         welcome_title: "Bem-vindo ao Imagify Pro!",
+        policy_title: "🚀 Política de Acesso Gratuito:",
+        policy_1: "Ver anúncio: <b style='color:#16a34a'>10 min ilimitado</b>",
+        policy_2: "Visualizar: <b style='color:#6b7280'>1 min de teste</b>",
+        policy_3: "Esta janela aparecerá novamente após o tempo.",
         btn_watch: "📺 Ver anúncio e iniciar",
-        btn_look: "Apenas olhar"
+        btn_watch_sub: "(10 min grátis)",
+        btn_look: "👀 Apenas olhar",
+        btn_look_sub: "(1 min grátis)"
     },
 
     // 10. 인도네시아어 (Indonesian)
@@ -299,7 +381,6 @@ const translations = {
         meta_title: "Imagify Pro - Alat Media Online Gratis (GIF, WebP, Ikon)",
         meta_desc: "Konversi Video ke GIF, WebP, pembuat Meme, ekstrak MP3, dan buat Ikon Aplikasi. Gratis, aman, dan tanpa instalasi.",
         meta_keywords: "Buat GIF, Konversi WebP, Ekstrak MP3, Pembuat Ikon, Alat Online, Meme",
-        
         subtitle: "Alat Media Gratis Tanpa Instalasi",
         nav_gif: "🎥 Pembuat GIF",
         nav_webp: "⚡ Konversi WebP",
@@ -318,54 +399,48 @@ const translations = {
         btn_audio: "Ekstrak MP3",
         h2_icon: "Pembuat Ikon Aplikasi",
         btn_icon: "Buat Ikon",
-        ad_wait: "Mohon tunggu.",
+
+        // Overlay Translations
         welcome_title: "Selamat datang di Imagify Pro!",
+        policy_title: "🚀 Kebijakan Akses Gratis:",
+        policy_1: "Tonton Iklan: <b style='color:#16a34a'>10 Menit Unlimited</b>",
+        policy_2: "Pratinjau: <b style='color:#6b7280'>1 Menit Uji Coba</b>",
+        policy_3: "Jendela ini akan muncul lagi setelah waktu habis.",
         btn_watch: "📺 Tonton Iklan & Mulai",
-        btn_look: "Lihat-lihat saja"
+        btn_watch_sub: "(10 Menit Gratis)",
+        btn_look: "👀 Lihat-lihat saja",
+        btn_look_sub: "(1 Menit Gratis)"
     }
 };
 
 /**
- * [업데이트됨] 언어 적용 함수
- * - HTML 텍스트 변경
- * - Google Meta 태그 (Title, Desc, Keywords) 변경
- * - Social Media Open Graph 태그 변경
+ * 언어 적용 함수 (기존과 동일하되 data-i18n 처리 로직 유지)
  */
 function applyLanguage() {
-    // 1. 브라우저 언어 감지
     const userLang = (navigator.language || navigator.userLanguage).substring(0, 2);
-    
-    // 2. 지원하는 언어인지 확인 (없으면 영어 'en')
     const lang = translations[userLang] ? userLang : 'en';
     const t = translations[lang];
 
     console.log(`Detected Language: ${userLang}, Applied: ${lang}`);
 
-    // 3. 페이지 제목(Title) 업데이트
+    // Title Update
     if (t.meta_title) document.title = t.meta_title;
     
-    // 4. 메타 태그 업데이트 함수 (SEO & Social)
+    // Meta Tags Update
     const updateMeta = (selector, content) => {
         if (!content) return;
         const element = document.querySelector(selector);
-        if (element) {
-            element.setAttribute("content", content);
-        }
+        if (element) element.setAttribute("content", content);
     };
 
-    // SEO Meta Tags
     updateMeta('meta[name="description"]', t.meta_desc);
     updateMeta('meta[name="keywords"]', t.meta_keywords);
-
-    // Social Media Tags (Open Graph)
     updateMeta('meta[property="og:title"]', t.meta_title);
     updateMeta('meta[property="og:description"]', t.meta_desc);
-
-    // Twitter Tags
     updateMeta('meta[name="twitter:title"]', t.meta_title);
     updateMeta('meta[name="twitter:description"]', t.meta_desc);
 
-    // 5. HTML 본문 텍스트 적용 (data-i18n)
+    // Text Content Update
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (t[key]) {
@@ -378,5 +453,4 @@ function applyLanguage() {
     });
 }
 
-// 페이지 로드 시 언어 적용 실행
 document.addEventListener('DOMContentLoaded', applyLanguage);
