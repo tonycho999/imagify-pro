@@ -60,15 +60,7 @@
             alert('👑 관리자 모드 활성화: 광고가 제거되었습니다.');
             window.history.replaceState({}, document.title, "/");
         }
-    </script>
-
-    <script>
-        if (!localStorage.getItem('isAdmin')) {
-            const popunderScript = document.createElement('script');
-            popunderScript.src = "https://pl28767048.effectivegatecpm.com/50/c2/fc/50c2fc22979caa8232fb836e619e0f71.js";
-            popunderScript.async = true;
-            document.head.appendChild(popunderScript);
-        }
+        // 기존 popunder 광고 스크립트 삭제됨
     </script>
 </head>
 <body>
@@ -104,7 +96,7 @@
                 <label><span data-i18n="label_start">Start:</span> <input type="number" id="gif-start" value="0" min="0" style="width:60px"> sec</label>
                 <label><span data-i18n="label_duration">Duration:</span> <input type="number" id="gif-duration" value="3" min="1" style="width:60px"> sec</label>
             </div>
-            <button class="action-btn" onclick="processGif(); autoReset('gif-upload')" data-i18n="btn_gif">Convert to GIF</button>
+            <button class="action-btn" onclick="executeWithAd('gif-upload', processGif)" data-i18n="btn_gif">Convert to GIF</button>
             <div class="log" id="gif-log"></div>
             <div id="gif-result"></div>
         </section>
@@ -119,7 +111,7 @@
                 </ol>
             </div>
             <input type="file" id="webp-upload" accept="image/*">
-            <button class="action-btn" onclick="processWebp(); autoReset('webp-upload')" data-i18n="btn_webp">Convert & Download</button>
+            <button class="action-btn" onclick="executeWithAd('webp-upload', processWebp)" data-i18n="btn_webp">Convert & Download</button>
             <div class="log" id="webp-log"></div>
         </section>
 
@@ -140,7 +132,7 @@
             </div>
             <canvas id="meme-canvas" style="display:none; max-width: 100%; height: auto; margin-top:10px;"></canvas>
             <br>
-            <button class="action-btn" onclick="downloadMeme(); autoReset('meme-upload')" data-i18n="btn_meme">Save Meme</button>
+            <button class="action-btn" onclick="executeWithAd('meme-upload', downloadMeme)" data-i18n="btn_meme">Save Meme</button>
         </section>
 
         <section id="tab-audio" style="display:none;">
@@ -153,7 +145,7 @@
                 </ol>
             </div>
             <input type="file" id="audio-upload" accept="video/*">
-            <button class="action-btn" onclick="processAudio(); autoReset('audio-upload')" data-i18n="btn_audio">Extract MP3</button>
+            <button class="action-btn" onclick="executeWithAd('audio-upload', processAudio)" data-i18n="btn_audio">Extract MP3</button>
             <div class="log" id="audio-log"></div>
             <div id="audio-result"></div>
         </section>
@@ -168,7 +160,7 @@
                 </ol>
             </div>
             <input type="file" id="icon-upload" accept="image/*">
-            <button class="action-btn" onclick="processIcon(); autoReset('icon-upload')" data-i18n="btn_icon">Generate Icons</button>
+            <button class="action-btn" onclick="executeWithAd('icon-upload', processIcon)" data-i18n="btn_icon">Generate Icons</button>
             <div class="log" id="icon-log"></div>
             <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;"></div>
         </section>
@@ -227,6 +219,32 @@
                     input.value = '';
                 }
             }, 1000);
+        }
+
+        // --- 새로 추가된 광고 및 기능 실행 로직 ---
+        function executeWithAd(inputId, actionCallback) {
+            // 1. 관리자 모드인 경우: 광고 없이 바로 실행
+            if (localStorage.getItem('isAdmin') === 'true') {
+                actionCallback();
+                autoReset(inputId);
+                return;
+            }
+
+            // 2. 일반 사용자 로직: 마지막 광고 시청 시간 확인
+            const lastAdTime = localStorage.getItem('lastAdTime');
+            const now = Date.now();
+            const tenMinutes = 10 * 60 * 1000; // 10분을 밀리초로 변환
+
+            if (!lastAdTime || (now - parseInt(lastAdTime)) > tenMinutes) {
+                // 광고를 처음 보거나 10분이 지났을 경우
+                alert('📺 광고 시청 후 10분 동안 모든 기능을 자유롭게 사용하실 수 있습니다.');
+                window.open('https://www.profitablecpmratenetwork.com/sixxckcc?key=4eb969603869537299f01f0be074e152', '_blank');
+                localStorage.setItem('lastAdTime', now.toString());
+            }
+
+            // 기능 실행 및 초기화
+            actionCallback();
+            autoReset(inputId);
         }
     </script>
 
