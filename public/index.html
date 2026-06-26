@@ -47,28 +47,21 @@
         .seo-section p { margin-bottom: 15px; font-size: 0.95rem; }
         .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 0.85rem; border-top: 1px solid #e5e7eb; margin-top: 40px;}
         .footer a { color: #4F46E5; text-decoration: none; }
+        .coupang-ad-container { width: 100%; display: flex; justify-content: center; margin: 20px 0; }
     </style>
 
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7272957295128241" crossorigin="anonymous"></script>
-    
-    <script>
-        // URL에 ?admin=master 가 있으면 관리자로 등록
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('admin') === 'master') {
-            localStorage.setItem('isAdmin', 'true');
-            alert('👑 관리자 모드 활성화: 광고가 제거되었습니다.');
-            window.history.replaceState({}, document.title, "/");
-        }
-        // 기존 popunder 광고 스크립트 삭제됨
-    </script>
-</head>
+    </head>
 <body>
 
     <header>
         <h1>✨ Imagify Pro</h1>
         <p data-i18n="subtitle">Free, Secure, Serverless Media Tools</p>
     </header>
+
+    <div class="coupang-ad-container">
+        <iframe src="https://coupa.ng/cnEDxk" width="100%" height="75" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics></iframe>
+    </div>
 
     <nav class="nav" role="tablist">
         <button onclick="switchTab('gif')" class="active" id="btn-gif" data-i18n="nav_gif">🎥 GIF Maker</button>
@@ -186,6 +179,10 @@
         </section>
     </main>
 
+    <div class="coupang-ad-container">
+        <iframe src="https://coupa.ng/cnEDxk" width="100%" height="75" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics></iframe>
+    </div>
+
     <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 50px 0 30px 0;">
         <a href="https://www.buymeacoffee.com/tonycho" target="_blank" style="display: flex; align-items: center; background-color: #FFDD00; color: #000000; font-family: 'Cookie', cursive, sans-serif; font-size: 20px; font-weight: bold; padding: 10px 20px; border-radius: 50px; text-decoration: none; box-shadow: 0px 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
             <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee" style="width: 25px; height: 25px; margin-right: 10px;">
@@ -211,7 +208,7 @@
     <script src="js/icon.js"></script>
 
     <script>
-        // 파일 업로드 시 input 값 초기화 (사용성 향상)
+        // 파일 업로드 시 input 값 초기화
         function autoReset(inputId) {
             setTimeout(() => {
                 const input = document.getElementById(inputId);
@@ -221,28 +218,9 @@
             }, 1000);
         }
 
-        // --- 새로 추가된 광고 및 기능 실행 로직 ---
+        // --- 수정된 실행 로직: 기존의 외부 팝업 광고 스크립트 전면 제거 ---
         function executeWithAd(inputId, actionCallback) {
-            // 1. 관리자 모드인 경우: 광고 없이 바로 실행
-            if (localStorage.getItem('isAdmin') === 'true') {
-                actionCallback();
-                autoReset(inputId);
-                return;
-            }
-
-            // 2. 일반 사용자 로직: 마지막 광고 시청 시간 확인
-            const lastAdTime = localStorage.getItem('lastAdTime');
-            const now = Date.now();
-            const tenMinutes = 10 * 60 * 1000; // 10분을 밀리초로 변환
-
-            if (!lastAdTime || (now - parseInt(lastAdTime)) > tenMinutes) {
-                // 광고를 처음 보거나 10분이 지났을 경우
-                alert('📺 광고 시청 후 10분 동안 모든 기능을 자유롭게 사용하실 수 있습니다.');
-                window.open('https://www.profitablecpmratenetwork.com/sixxckcc?key=4eb969603869537299f01f0be074e152', '_blank');
-                localStorage.setItem('lastAdTime', now.toString());
-            }
-
-            // 기능 실행 및 초기화
+            // 강제 팝업창(profitablecpmratenetwork) 로직을 지우고, 사용자가 버튼을 누르면 즉시 기능이 실행되도록 변경했습니다.
             actionCallback();
             autoReset(inputId);
         }
