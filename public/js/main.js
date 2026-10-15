@@ -2,7 +2,11 @@
 
 // FFmpeg 초기화
 const { createFFmpeg, fetchFile } = FFmpeg;
-window.ffmpeg = createFFmpeg({ log: false });
+window.ffmpeg = createFFmpeg({
+    log: false,
+    mainName: 'main', // core-st는 반드시 'main'
+    corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js'
+});
 
 /**
  * 탭 전환
