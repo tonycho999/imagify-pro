@@ -12,7 +12,7 @@ async function processAudio() {
         resultDiv.innerHTML = "";
 
         try {
-            if (!window.ffmpeg.isLoaded()) await window.ffmpeg.load();
+            await window.resetFFmpeg();
 
             log.innerText = "🎵 Extracting Audio...";
             window.ffmpeg.FS('writeFile', 'input_video', await FFmpeg.fetchFile(file));
