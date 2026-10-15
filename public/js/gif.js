@@ -1,16 +1,43 @@
-/* gif.js - 이미지 여러 장 → GIF (ffmpeg core-st, 이미지마다 시간 설정) */
+/* gif.js - 이미지 여러 장 → GIF
+   (ffmpeg core-st, 이미지별 표시 시간 + 전환마다 페이드 시간) */
 
 const GIF_MIN = 2;
 const GIF_MAX = 10;
-const GIF_WIDTH = 480;        // 결과 GIF 가로(px)
-const GIF_DELAY_MIN = 0.1;
+const GIF_WIDTH = 480;          // 결과 GIF 가로(px)
+const GIF_DELAY_MIN = 0.1;      // 이미지 표시 시간 범위
 const GIF_DELAY_MAX = 10;
+const FADE_MIN = 0;             // 전환 시간 범위 (0 = 바로 바뀜)
+const FADE_MAX = 3;
+const FADE_STEP = 0.05;         // 전환 프레임 간격(초)
+const FADE_MAX_STEPS = 20;      // 전환 1회당 최대 중간 프레임 수 (용량 보호)
 
-let gifFrames = [];           // { file, url, delay }
+let gifFrames = [];             // { file, url, delay, fade }  fade = 다음 이미지로 넘어가는 전환 시간
 let gifResultUrl = null;
 let gifBusy = false;
 
 const gifInput = document.getElementById('gif-upload');
+
+/* ---------- 값 정리 ---------- */
+
+function round1(v) { return Math.round(v * 10) / 10; }
+
+function clampDelay(v) {
+    if (isNaN(v)) v = 0.5;
+    return Math.min(GIF_DELAY_MAX, Math.max(GIF_DELAY_MIN, round1(v)));
+}
+
+function clampFade(v) {
+    if (isNaN(v)) v = 0;
+    return Math.min(FADE_MAX, Math.max(FADE_MIN, round1(v)));
+}
+
+function getDefaultDelay() {
+    return clampDelay(parseFloat(document.getElementById('gif-delay-all').value));
+}
+
+function getDefaultFade() {
+    return clampFade(parseFloat(document.getElementById('gif-fade-all').value));
+}
 
 /* ---------- 이미지 추가 ---------- */
 
@@ -26,18 +53,14 @@ gifInput.addEventListener('change', () => {
     if (!file) return;
     if (!file.type.startsWith('image/')) return alert('이미지 파일만 넣을 수 있어요.');
 
-    gifFrames.push({ file, url: URL.createObjectURL(file), delay: getDefaultDelay() });
+    gifFrames.push({
+        file,
+        url: URL.createObjectURL(file),
+        delay: getDefaultDelay(),
+        fade: getDefaultFade()
+    });
     renderGifList();
 });
-
-function clampDelay(v) {
-    if (isNaN(v)) v = 0.5;
-    return Math.min(GIF_DELAY_MAX, Math.max(GIF_DELAY_MIN, Math.round(v * 10) / 10));
-}
-
-function getDefaultDelay() {
-    return clampDelay(parseFloat(document.getElementById('gif-delay-all').value));
-}
 
 /* ---------- 목록 그리기 ---------- */
 
@@ -51,47 +74,86 @@ function makeSmallBtn(text, title, onClick, disabled = false) {
     return b;
 }
 
+function makeNumberInput(value, min, max, onChange) {
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = min;
+    input.max = max;
+    input.step = '0.1';
+    input.value = value;
+    input.addEventListener('change', () => onChange(input));
+    return input;
+}
+
+// 이미지 한 줄
+function makeImageRow(frame, i, n) {
+    const li = document.createElement('li');
+    li.className = 'gif-item';
+
+    const num = document.createElement('span');
+    num.className = 'gif-num';
+    num.textContent = i + 1;
+
+    const img = document.createElement('img');
+    img.src = frame.url;
+    img.alt = `${i + 1}번째 이미지`;
+
+    const label = document.createElement('label');
+    label.className = 'gif-delay';
+    const input = makeNumberInput(frame.delay, GIF_DELAY_MIN, GIF_DELAY_MAX, el => {
+        frame.delay = clampDelay(parseFloat(el.value));
+        el.value = frame.delay;
+        updateGifTotal();
+    });
+    label.append('⏱️ ', input, ' 초');
+
+    const actions = document.createElement('div');
+    actions.className = 'gif-actions';
+    actions.append(
+        makeSmallBtn('▲', '앞으로', () => moveFrame(i, -1), i === 0),
+        makeSmallBtn('▼', '뒤로', () => moveFrame(i, 1), i === n - 1),
+        makeSmallBtn('✕', '삭제', () => removeFrame(i))
+    );
+
+    li.append(num, img, label, actions);
+    return li;
+}
+
+// 전환 한 줄 (i번 → i+1번, 마지막은 → 1번)
+function makeTransRow(frame, i, n) {
+    const isLoop = i === n - 1;
+    const li = document.createElement('li');
+    li.className = 'gif-trans' + (isLoop ? ' loop' : '');
+
+    const title = document.createElement('span');
+    title.textContent = isLoop ? `🔁 ${n} → 1 (반복될 때) 전환` : `⬇️ ${i + 1} → ${i + 2} 전환`;
+
+    const hint = document.createElement('span');
+    hint.className = 'gif-trans-hint';
+    const updateHint = () => {
+        hint.textContent = frame.fade > 0 ? `(페이드 ${frame.fade}초)` : '(바로 바뀜)';
+    };
+
+    const input = makeNumberInput(frame.fade, FADE_MIN, FADE_MAX, el => {
+        frame.fade = clampFade(parseFloat(el.value));
+        el.value = frame.fade;
+        updateHint();
+        updateGifTotal();
+    });
+
+    updateHint();
+    li.append(title, input, '초', hint);
+    return li;
+}
+
 function renderGifList() {
     const list = document.getElementById('gif-list');
+    const n = gifFrames.length;
     list.innerHTML = '';
 
     gifFrames.forEach((frame, i) => {
-        const li = document.createElement('li');
-        li.className = 'gif-item';
-
-        const num = document.createElement('span');
-        num.className = 'gif-num';
-        num.textContent = i + 1;
-
-        const img = document.createElement('img');
-        img.src = frame.url;
-        img.alt = `${i + 1}번째 이미지`;
-
-        const label = document.createElement('label');
-        label.className = 'gif-delay';
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.min = GIF_DELAY_MIN;
-        input.max = GIF_DELAY_MAX;
-        input.step = '0.1';
-        input.value = frame.delay;
-        input.addEventListener('change', () => {
-            frame.delay = clampDelay(parseFloat(input.value));
-            input.value = frame.delay;
-            updateGifTotal();
-        });
-        label.append('⏱️ ', input, ' 초');
-
-        const actions = document.createElement('div');
-        actions.className = 'gif-actions';
-        actions.append(
-            makeSmallBtn('▲', '앞으로', () => moveFrame(i, -1), i === 0),
-            makeSmallBtn('▼', '뒤로', () => moveFrame(i, 1), i === gifFrames.length - 1),
-            makeSmallBtn('✕', '삭제', () => removeFrame(i))
-        );
-
-        li.append(num, img, label, actions);
-        list.appendChild(li);
+        list.appendChild(makeImageRow(frame, i, n));
+        if (n >= 2) list.appendChild(makeTransRow(frame, i, n));
     });
 
     updateGifUI();
@@ -122,9 +184,12 @@ function updateGifUI() {
 }
 
 function updateGifTotal() {
-    const total = gifFrames.reduce((s, f) => s + f.delay, 0);
-    document.getElementById('gif-total').textContent =
-        gifFrames.length ? `총 ${gifFrames.length}장 · 한 바퀴 ${total.toFixed(1)}초` : '';
+    const n = gifFrames.length;
+    const hold = gifFrames.reduce((s, f) => s + f.delay, 0);
+    const fades = n >= 2 ? gifFrames.reduce((s, f) => s + f.fade, 0) : 0;
+    document.getElementById('gif-total').textContent = n
+        ? `총 ${n}장 · 한 바퀴 ${(hold + fades).toFixed(1)}초 (표시 ${hold.toFixed(1)}초 + 전환 ${fades.toFixed(1)}초)`
+        : '';
 }
 
 /* ---------- 순서 / 삭제 / 전체 적용 / 초기화 ---------- */
@@ -150,6 +215,13 @@ function applyDelayAll() {
     renderGifList();
 }
 
+function applyFadeAll() {
+    const d = getDefaultFade();
+    document.getElementById('gif-fade-all').value = d;
+    gifFrames.forEach(f => (f.fade = d));
+    renderGifList();
+}
+
 function resetGif() {
     if (gifBusy) return;
     gifFrames.forEach(f => URL.revokeObjectURL(f.url));
@@ -161,7 +233,7 @@ function resetGif() {
     renderGifList();
 }
 
-/* ---------- 이미지 준비 (크기·포맷 통일) ---------- */
+/* ---------- 이미지 준비 ---------- */
 
 function loadImage(url) {
     return new Promise((resolve, reject) => {
@@ -172,19 +244,22 @@ function loadImage(url) {
     });
 }
 
-function toPngBytes(img, width, height) {
+// 같은 크기 캔버스에 흰 배경 + 비율 유지 가운데 정렬
+function drawToCanvas(img, width, height) {
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d');
-
-    ctx.fillStyle = '#ffffff';                 // 여백 색
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, width, height);
     const scale = Math.min(width / img.naturalWidth, height / img.naturalHeight);
     const w = img.naturalWidth * scale;
     const h = img.naturalHeight * scale;
     ctx.drawImage(img, (width - w) / 2, (height - h) / 2, w, h);
+    return canvas;
+}
 
+function canvasToPng(canvas) {
     return new Promise(resolve => {
         canvas.toBlob(async blob => resolve(new Uint8Array(await blob.arrayBuffer())), 'image/png');
     });
@@ -198,6 +273,7 @@ async function processGif() {
 
     const log = document.getElementById('gif-log');
     const resultDiv = document.getElementById('gif-result');
+    const n = gifFrames.length;
 
     gifBusy = true;
     updateGifUI();
@@ -213,34 +289,67 @@ async function processGif() {
         const width = GIF_WIDTH;
         const height = Math.round((first.naturalHeight * width / first.naturalWidth) / 2) * 2;
 
-        // 1) 이미지를 같은 크기의 PNG로 저장
-        const names = [];
-        for (let i = 0; i < gifFrames.length; i++) {
-            log.innerText = `🖼️ 이미지 준비 중... (${i + 1}/${gifFrames.length})`;
+        // 1) 모든 이미지를 같은 크기 캔버스로
+        const bases = [];
+        for (let i = 0; i < n; i++) {
+            log.innerText = `🖼️ 이미지 준비 중... (${i + 1}/${n})`;
             const img = i === 0 ? first : await loadImage(gifFrames[i].url);
-            const name = `f${String(i).padStart(3, '0')}.png`;
-            ffmpeg.FS('writeFile', name, await toPngBytes(img, width, height));
-            names.push(name);
+            bases.push(drawToCanvas(img, width, height));
         }
 
-        // 2) 이미지별 표시 시간 목록
+        const mix = document.createElement('canvas');
+        mix.width = width;
+        mix.height = height;
+        const mctx = mix.getContext('2d');
+
+        // 2) 이미지 + 전환마다 다른 페이드 프레임 저장
+        const entries = [];   // { name, dur }
+        let t = 0;
+
+        for (let i = 0; i < n; i++) {
+            log.innerText = `✨ 프레임 만드는 중... (${i + 1}/${n})`;
+
+            const name = `f${String(i).padStart(3, '0')}.png`;
+            ffmpeg.FS('writeFile', name, await canvasToPng(bases[i]));
+            entries.push({ name, dur: gifFrames[i].delay });
+
+            const fade = gifFrames[i].fade;       // 이 이미지 → 다음 이미지 (마지막은 → 첫 장)
+            if (fade > 0) {
+                const steps = Math.min(FADE_MAX_STEPS, Math.max(1, Math.round(fade / FADE_STEP)));
+                const stepDur = Math.max(0.02, Math.round((fade / steps) * 100) / 100);
+                const next = bases[(i + 1) % n];
+
+                for (let s = 1; s <= steps; s++) {
+                    const alpha = s / (steps + 1);  // 다음 이미지가 점점 진해짐
+                    mctx.globalAlpha = 1;
+                    mctx.drawImage(bases[i], 0, 0);
+                    mctx.globalAlpha = alpha;
+                    mctx.drawImage(next, 0, 0);
+
+                    const tn = `t${String(t++).padStart(4, '0')}.png`;
+                    ffmpeg.FS('writeFile', tn, await canvasToPng(mix));
+                    entries.push({ name: tn, dur: stepDur });
+                }
+                mctx.globalAlpha = 1;
+            }
+        }
+
+        // 3) 프레임별 시간 목록
         let list = '';
-        gifFrames.forEach((f, i) => {
-            list += `file '${names[i]}'\nduration ${f.delay}\n`;
-        });
+        entries.forEach(e => { list += `file '${e.name}'\nduration ${e.dur}\n`; });
         ffmpeg.FS('writeFile', 'list.txt', new TextEncoder().encode(list));
 
-        // 마지막 이미지 표시 시간 (GIF 단위: 1/100초)
-        const lastDelayCs = Math.round(gifFrames[gifFrames.length - 1].delay * 100);
+        // 마지막 프레임 시간 (GIF 단위: 1/100초)
+        const lastDelayCs = Math.round(entries[entries.length - 1].dur * 100);
 
-        // 3) 팔레트 생성 + GIF 변환을 run 1번으로 처리
-        log.innerText = '🎞️ GIF 만드는 중...';
+        // 4) 팔레트 생성 + GIF 변환을 run 1번으로
+        log.innerText = `🎞️ GIF 만드는 중... (프레임 ${entries.length}장)`;
         await ffmpeg.run(
             '-f', 'concat', '-safe', '0', '-i', 'list.txt',
             '-filter_complex', 'split[a][b];[a]palettegen[p];[b][p]paletteuse',
-            '-vsync', 'vfr',                       // 이미지 1장 = 프레임 1장 (시간은 지연값으로)
-            '-loop', '0',                          // 무한 반복
-            '-final_delay', String(lastDelayCs),   // 마지막 이미지 시간
+            '-vsync', 'vfr',
+            '-loop', '0',
+            '-final_delay', String(lastDelayCs),
             '-y', 'output.gif'
         );
 
@@ -262,7 +371,8 @@ async function processGif() {
         link.style.display = 'block';
         resultDiv.appendChild(link);
 
-        log.innerText = '✅ 변환 완료!';
+        const sizeMB = (data.length / 1024 / 1024).toFixed(1);
+        log.innerText = `✅ 변환 완료! (${sizeMB}MB)`;
     } catch (err) {
         console.error(err);
         log.innerText = '❌ 변환 실패: ' + err.message;
