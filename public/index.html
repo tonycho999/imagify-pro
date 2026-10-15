@@ -92,27 +92,29 @@
     </nav>
 
     <main>
-        <section id="tab-gif" class="active">
-            <h2 data-i18n="h2_gif">Video to GIF Converter</h2>
-            <div class="guide">
-                <h3 data-i18n="guide_title">📖 How to use</h3>
-                <ol>
-                    <li data-i18n="guide_gif_1">Upload a video file (MP4, MOV, etc).</li>
-                    <li data-i18n="guide_gif_2">Set Start Time and Duration.</li>
-                    <li data-i18n="guide_gif_3">Click <b>Convert to GIF</b>.</li>
-                </ol>
-            </div>
-            <div class="upload-area">
-                <input type="file" id="gif-upload" accept="video/*">
-            </div>
-            <div class="controls" style="display:none;" id="gif-controls">
-                <label><span data-i18n="label_start">Start:</span> <input type="number" id="gif-start" value="0" min="0" style="width:60px"> sec</label>
-                <label><span data-i18n="label_duration">Duration:</span> <input type="number" id="gif-duration" value="3" min="1" style="width:60px"> sec</label>
-            </div>
-            <button class="action-btn" onclick="executeWithAd('gif-upload', processGif)" data-i18n="btn_gif">Convert to GIF</button>
-            <div class="log" id="gif-log"></div>
-            <div id="gif-result"></div>
-        </section>
+<section id="tab-gif" class="active">
+    <h2 data-i18n="h2_gif">Images to GIF Maker</h2>
+    <div class="guide">
+        <h3 data-i18n="guide_title">📖 How to use</h3>
+        <ol>
+            <li data-i18n="guide_gif_1">Upload 2–10 images (JPG, PNG, WebP).</li>
+            <li data-i18n="guide_gif_2">Set the frame delay (seconds per image).</li>
+            <li data-i18n="guide_gif_3">Click <b>Create GIF</b>.</li>
+        </ol>
+    </div>
+    <div class="upload-area">
+        <input type="file" id="gif-upload" accept="image/*" multiple>
+    </div>
+    <div class="controls" style="display:none;" id="gif-controls">
+        <label><span data-i18n="label_delay">Frame delay:</span>
+            <input type="number" id="gif-delay" value="0.5" min="0.1" max="5" step="0.1" style="width:60px"> sec
+        </label>
+    </div>
+    <button class="action-btn" onclick="executeWithAd('gif-upload', processGif)" data-i18n="btn_gif">Create GIF</button>
+    <div class="log" id="gif-log"></div>
+    <div id="gif-result"></div>
+</section>
+
 
         <section id="tab-webp" style="display:none;">
             <h2 data-i18n="h2_webp">JPG/PNG to WebP Converter</h2>
@@ -237,10 +239,12 @@
             }, 1000);
         }
 
-        function executeWithAd(inputId, actionCallback) {
-            actionCallback();
-            autoReset(inputId);
-        }
+function executeWithAd(inputId, actionCallback) {
+    actionCallback();
+    // GIF는 여러 장을 고른 채로 간격만 바꿔 다시 변환할 수 있게 초기화하지 않음
+    if (inputId !== 'gif-upload') autoReset(inputId);
+}
+
     </script>
 
 </body>
