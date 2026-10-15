@@ -3,7 +3,6 @@
 const GIF_MIN = 2;
 const GIF_MAX = 10;
 const GIF_WIDTH = 480;        // 결과 GIF 가로(px)
-const GIF_FPS = 10;           // 0.1초 단위로 시간 지정
 const GIF_DELAY_MIN = 0.1;
 const GIF_DELAY_MAX = 10;
 
@@ -197,91 +196,78 @@ async function processGif() {
     if (gifBusy) return;
     if (gifFrames.length < GIF_MIN) return alert(`이미지를 최소 ${GIF_MIN}장 이상 넣어주세요.`);
 
-    window.checkAd(async () => {
+    const log = document.getElementById('gif-log');
+    const resultDiv = document.getElementById('gif-result');
+
+    gifBusy = true;
+    updateGifUI();
+
+    try {
+        // core-st는 run 1회 후 종료되므로 매번 엔진을 새로 띄움
+        log.innerText = '⏳ 변환 엔진 준비 중...';
+        await window.resetFFmpeg();
         const ffmpeg = window.ffmpeg;
-        const log = document.getElementById('gif-log');
-        const resultDiv = document.getElementById('gif-result');
-        const tempFiles = [];
 
-        gifBusy = true;
-        updateGifUI();
+        // 첫 이미지 비율 기준으로 크기 결정
+        const first = await loadImage(gifFrames[0].url);
+        const width = GIF_WIDTH;
+        const height = Math.round((first.naturalHeight * width / first.naturalWidth) / 2) * 2;
 
-        try {
-            log.innerText = '⏳ 변환 엔진 불러오는 중...';
-            if (!ffmpeg.isLoaded()) await ffmpeg.load();
-
-            // 첫 이미지 비율 기준으로 크기 결정
-            const first = await loadImage(gifFrames[0].url);
-            const width = GIF_WIDTH;
-            const height = Math.round((first.naturalHeight * width / first.naturalWidth) / 2) * 2;
-
-            // 1) 이미지를 같은 크기의 PNG로 저장
-            for (let i = 0; i < gifFrames.length; i++) {
-                log.innerText = `🖼️ 이미지 준비 중... (${i + 1}/${gifFrames.length})`;
-                const img = i === 0 ? first : await loadImage(gifFrames[i].url);
-                const name = `f${String(i).padStart(3, '0')}.png`;
-                ffmpeg.FS('writeFile', name, await toPngBytes(img, width, height));
-                tempFiles.push(name);
-            }
-
-            // 2) 이미지별 표시 시간을 담은 concat 목록
-            let list = '';
-            gifFrames.forEach((f, i) => {
-                list += `file '${tempFiles[i]}'\nduration ${f.delay}\n`;
-            });
-            list += `file '${tempFiles[tempFiles.length - 1]}'\n`; // 마지막 시간 적용용 (ffmpeg 규칙)
-            ffmpeg.FS('writeFile', 'list.txt', new TextEncoder().encode(list));
-            tempFiles.push('list.txt');
-
-            const total = gifFrames.reduce((s, f) => s + f.delay, 0).toFixed(1);
-
-            // 3) 색상 팔레트 만들기 (화질 향상)
-            log.innerText = '🎨 색상 분석 중...';
-            await ffmpeg.run(
-                '-f', 'concat', '-safe', '0', '-i', 'list.txt',
-                '-vf', 'palettegen',
-                '-y', 'palette.png'
-            );
-            tempFiles.push('palette.png');
-
-            // 4) GIF 만들기
-            log.innerText = '🎞️ GIF 만드는 중...';
-            await ffmpeg.run(
-                '-f', 'concat', '-safe', '0', '-i', 'list.txt',
-                '-i', 'palette.png',
-                '-filter_complex', `[0:v]fps=${GIF_FPS}[v];[v][1:v]paletteuse`,
-                '-t', total,
-                '-loop', '0',
-                '-y', 'output.gif'
-            );
-            tempFiles.push('output.gif');
-
-            const data = ffmpeg.FS('readFile', 'output.gif');
-            if (gifResultUrl) URL.revokeObjectURL(gifResultUrl);
-            gifResultUrl = URL.createObjectURL(new Blob([data.buffer], { type: 'image/gif' }));
-
-            resultDiv.innerHTML = '';
-            const out = document.createElement('img');
-            out.src = gifResultUrl;
-            out.alt = '완성된 GIF';
-            resultDiv.appendChild(out);
-
-            const link = document.createElement('a');
-            link.href = gifResultUrl;
-            link.download = 'imagify.gif';
-            link.textContent = '⬇️ GIF 다운로드';
-            link.className = 'action-btn';
-            link.style.display = 'block';
-            resultDiv.appendChild(link);
-
-            log.innerText = '✅ 변환 완료!';
-        } catch (err) {
-            console.error(err);
-            log.innerText = '❌ 변환 실패: ' + err.message;
-        } finally {
-            tempFiles.forEach(n => { try { ffmpeg.FS('unlink', n); } catch (e) {} });
-            gifBusy = false;
-            updateGifUI();
+        // 1) 이미지를 같은 크기의 PNG로 저장
+        const names = [];
+        for (let i = 0; i < gifFrames.length; i++) {
+            log.innerText = `🖼️ 이미지 준비 중... (${i + 1}/${gifFrames.length})`;
+            const img = i === 0 ? first : await loadImage(gifFrames[i].url);
+            const name = `f${String(i).padStart(3, '0')}.png`;
+            ffmpeg.FS('writeFile', name, await toPngBytes(img, width, height));
+            names.push(name);
         }
-    });
+
+        // 2) 이미지별 표시 시간 목록
+        let list = '';
+        gifFrames.forEach((f, i) => {
+            list += `file '${names[i]}'\nduration ${f.delay}\n`;
+        });
+        ffmpeg.FS('writeFile', 'list.txt', new TextEncoder().encode(list));
+
+        // 마지막 이미지 표시 시간 (GIF 단위: 1/100초)
+        const lastDelayCs = Math.round(gifFrames[gifFrames.length - 1].delay * 100);
+
+        // 3) 팔레트 생성 + GIF 변환을 run 1번으로 처리
+        log.innerText = '🎞️ GIF 만드는 중...';
+        await ffmpeg.run(
+            '-f', 'concat', '-safe', '0', '-i', 'list.txt',
+            '-filter_complex', 'split[a][b];[a]palettegen[p];[b][p]paletteuse',
+            '-vsync', 'vfr',                       // 이미지 1장 = 프레임 1장 (시간은 지연값으로)
+            '-loop', '0',                          // 무한 반복
+            '-final_delay', String(lastDelayCs),   // 마지막 이미지 시간
+            '-y', 'output.gif'
+        );
+
+        const data = ffmpeg.FS('readFile', 'output.gif');
+        if (gifResultUrl) URL.revokeObjectURL(gifResultUrl);
+        gifResultUrl = URL.createObjectURL(new Blob([data.buffer], { type: 'image/gif' }));
+
+        resultDiv.innerHTML = '';
+        const out = document.createElement('img');
+        out.src = gifResultUrl;
+        out.alt = '완성된 GIF';
+        resultDiv.appendChild(out);
+
+        const link = document.createElement('a');
+        link.href = gifResultUrl;
+        link.download = 'imagify.gif';
+        link.textContent = '⬇️ GIF 다운로드';
+        link.className = 'action-btn';
+        link.style.display = 'block';
+        resultDiv.appendChild(link);
+
+        log.innerText = '✅ 변환 완료!';
+    } catch (err) {
+        console.error(err);
+        log.innerText = '❌ 변환 실패: ' + err.message;
+    } finally {
+        gifBusy = false;
+        updateGifUI();
+    }
 }
