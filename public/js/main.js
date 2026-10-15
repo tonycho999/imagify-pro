@@ -1,12 +1,23 @@
 /* main.js */
 
-// FFmpeg 초기화
+// FFmpeg 초기화 (싱글스레드: SharedArrayBuffer 불필요)
 const { createFFmpeg, fetchFile } = FFmpeg;
 window.ffmpeg = createFFmpeg({
     log: false,
-    mainName: 'main', // core-st는 반드시 'main'
+    mainName: 'main',
     corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js'
 });
+
+/**
+ * core-st는 run() 한 번 후 종료되므로, 작업 전마다 엔진을 새로 띄움
+ * gif.js, audio.js 등에서 await resetFFmpeg(); 로 사용
+ */
+window.resetFFmpeg = async function () {
+    if (window.ffmpeg.isLoaded()) {
+        try { window.ffmpeg.exit(); } catch (e) {}
+    }
+    await window.ffmpeg.load();
+};
 
 /**
  * 탭 전환
@@ -31,13 +42,12 @@ function switchTab(tabName) {
     }
 }
 
-// gif.js 등에서 쓰는 window.checkAd(...) 호환용: 광고 없이 바로 실행
+// 예전 코드 호환용: 광고 없이 바로 실행
 window.checkAd = function (callback) {
     if (typeof callback === 'function') callback();
 };
 
 document.addEventListener('DOMContentLoaded', function () {
     switchTab('gif');
-    // 예전 광고 기록 정리
     localStorage.removeItem('imagify_ad_data');
 });
