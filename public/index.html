@@ -51,7 +51,7 @@
         /* 결과 GIF가 모바일 화면을 넘지 않도록 */
         #gif-result img { max-width: 100%; height: auto; display: block; margin: 10px auto; }
 
-        /* 이미지 배너 규격 및 정렬 */
+        /* 쿠팡 배너 */
         .coupang-ad-container {
             width: 100%;
             display: flex;
@@ -60,18 +60,10 @@
             padding: 0 20px;
             box-sizing: border-box;
         }
-        .coupang-ad-container a {
-            display: block;
-            max-width: 728px; /* 배너 원래 가로 크기 제한 */
-            width: 100%;
-        }
-        .coupang-ad-container img {
-            width: 100%;
-            height: auto; /* 모바일에서 비율 유지하며 축소 */
-            display: block;
-            border-radius: 6px;
-        }
+        .coupang-ad-container a { display: block; max-width: 728px; width: 100%; }
+        .coupang-ad-container img { width: 100%; height: auto; display: block; border-radius: 6px; }
     </style>
+
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
 </head>
 <body>
@@ -112,7 +104,7 @@
                     <input type="number" id="gif-delay" value="0.5" min="0.1" max="5" step="0.1" style="width:60px"> 초
                 </label>
             </div>
-            <button class="action-btn" onclick="executeWithAd('gif-upload', processGif)">GIF 만들기</button>
+            <button class="action-btn" onclick="runTool('gif-upload', processGif)">GIF 만들기</button>
             <div class="log" id="gif-log"></div>
             <div id="gif-result"></div>
         </section>
@@ -128,7 +120,7 @@
                 </ol>
             </div>
             <input type="file" id="webp-upload" accept="image/*">
-            <button class="action-btn" onclick="executeWithAd('webp-upload', processWebp)">변환 후 다운로드</button>
+            <button class="action-btn" onclick="runTool('webp-upload', processWebp)">변환 후 다운로드</button>
             <div class="log" id="webp-log"></div>
         </section>
 
@@ -150,7 +142,7 @@
             </div>
             <canvas id="meme-canvas" style="display:none; max-width: 100%; height: auto; margin-top:10px;"></canvas>
             <br>
-            <button class="action-btn" onclick="executeWithAd('meme-upload', downloadMeme)">짤 저장하기</button>
+            <button class="action-btn" onclick="runTool('meme-upload', downloadMeme)">짤 저장하기</button>
         </section>
 
         <!-- 오디오 추출 -->
@@ -164,7 +156,7 @@
                 </ol>
             </div>
             <input type="file" id="audio-upload" accept="video/*">
-            <button class="action-btn" onclick="executeWithAd('audio-upload', processAudio)">MP3 추출</button>
+            <button class="action-btn" onclick="runTool('audio-upload', processAudio)">MP3 추출</button>
             <div class="log" id="audio-log"></div>
             <div id="audio-result"></div>
         </section>
@@ -180,12 +172,12 @@
                 </ol>
             </div>
             <input type="file" id="icon-upload" accept="image/*">
-            <button class="action-btn" onclick="executeWithAd('icon-upload', processIcon)">아이콘 생성</button>
+            <button class="action-btn" onclick="runTool('icon-upload', processIcon)">아이콘 생성</button>
             <div class="log" id="icon-log"></div>
             <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;"></div>
         </section>
 
-        <!-- SEO 섹션 -->
+        <!-- SEO 섹션 (탭 전환 시에도 항상 표시) -->
         <section class="seo-section">
             <h2>왜 Imagify Pro인가요?</h2>
             <article>
@@ -241,7 +233,8 @@
             }, 1000);
         }
 
-        function executeWithAd(inputId, actionCallback) {
+        // 도구 실행 (광고 없음)
+        function runTool(inputId, actionCallback) {
             actionCallback();
             // GIF는 여러 장을 고른 채로 간격만 바꿔 다시 변환할 수 있게 초기화하지 않음
             if (inputId !== 'gif-upload') autoReset(inputId);
