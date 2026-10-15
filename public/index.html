@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Imagify Pro - Free Online Media Tools (GIF, WebP, Icon)</title>
-    <meta name="description" content="Convert Video to GIF, JPG to WebP, extract MP3, and generate App Icons. Free, secure, and serverless tools. No installation needed.">
-    <meta name="keywords" content="GIF maker, WebP converter, MP3 extractor, App icon generator, Free online tools, Meme generator">
-    
+
+    <title>Imagify Pro - 무료 온라인 미디어 도구 (GIF, WebP, 아이콘)</title>
+    <meta name="description" content="이미지로 GIF 만들기, JPG/PNG를 WebP로 변환, 영상에서 MP3 추출, 앱 아이콘 생성까지. 설치 없이 무료로, 브라우저에서 안전하게 처리됩니다.">
+    <meta name="keywords" content="GIF 만들기, 이미지 GIF 변환, 사진 GIF, WebP 변환, MP3 추출, 앱 아이콘 생성, 짤 만들기, 무료 온라인 도구">
+
     <meta name="author" content="Imagify Pro">
     <meta name="google-site-verification" content="jpV9ytZrmyOE3ncVmwd9y67IjH7vbZ_W5f1p-c7R940" />
     <meta name="theme-color" content="#4F46E5">
@@ -15,23 +15,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://imagify-pro.pages.dev/">
     <meta property="og:site_name" content="Imagify Pro">
-    <meta property="og:title" content="Imagify Pro - Free Online Media Tools">
-    <meta property="og:description" content="GIF Maker, WebP Converter, Meme Generator & Audio Extractor. No signup required.">
+    <meta property="og:locale" content="ko_KR">
+    <meta property="og:title" content="Imagify Pro - 무료 온라인 미디어 도구">
+    <meta property="og:description" content="GIF 만들기, WebP 변환, 짤 생성기, 오디오 추출. 회원가입 없이 무료로 사용하세요.">
     <meta property="og:image" content="https://imagify-pro.pages.dev/img/og-image1.png">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://imagify-pro.pages.dev/">
-    <meta name="twitter:title" content="Imagify Pro - Free Media Tools">
-    <meta name="twitter:description" content="Convert Video to GIF, WebP, Extract Audio, and Create Memes.">
+    <meta name="twitter:title" content="Imagify Pro - 무료 미디어 도구">
+    <meta name="twitter:description" content="이미지로 GIF 만들기, WebP 변환, 오디오 추출, 짤 만들기.">
     <meta name="twitter:image" content="https://imagify-pro.pages.dev/img/og-image1.png">
 
     <link rel="icon" type="image/png" href="img/favicon.png">
     <link rel="shortcut icon" href="img/favicon.png">
-
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/features.css">
-    
+
     <style>
         .seo-section {
             max-width: 800px;
@@ -45,207 +45,207 @@
         .seo-section h2 { font-size: 1.5rem; margin-bottom: 20px; color: #111; text-align: center; }
         .seo-section h3 { font-size: 1.2rem; margin-top: 20px; margin-bottom: 10px; color: #4F46E5; }
         .seo-section p { margin-bottom: 15px; font-size: 0.95rem; }
-        .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 0.85rem; border-top: 1px solid #e5e7eb; margin-top: 40px;}
+        .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 0.85rem; border-top: 1px solid #e5e7eb; margin-top: 40px; }
         .footer a { color: #4F46E5; text-decoration: none; }
-        
-        /* 새로운 이미지 배너 규격 및 정렬 스타일 */
-        .coupang-ad-container { 
-            width: 100%; 
-            display: flex; 
-            justify-content: center; 
-            margin: 25px 0; 
+
+        /* 결과 GIF가 모바일 화면을 넘지 않도록 */
+        #gif-result img { max-width: 100%; height: auto; display: block; margin: 10px auto; }
+
+        /* 이미지 배너 규격 및 정렬 */
+        .coupang-ad-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
             padding: 0 20px;
             box-sizing: border-box;
         }
         .coupang-ad-container a {
             display: block;
-            max-width: 728px; /* 배너 본래 가로 사이즈 제한 */
+            max-width: 728px; /* 배너 원래 가로 크기 제한 */
             width: 100%;
         }
         .coupang-ad-container img {
             width: 100%;
-            height: auto; /* 모바일에서 비율 유지하며 축소되도록 설정 */
+            height: auto; /* 모바일에서 비율 유지하며 축소 */
             display: block;
-            border-radius: 6px; /* 부드러운 UI 연출을 위해 약간의 라운드 적용 */
+            border-radius: 6px;
         }
     </style>
-
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.0/dist/ffmpeg.min.js"></script>
 </head>
 <body>
-
     <header>
         <h1>✨ Imagify Pro</h1>
-        <p data-i18n="subtitle">Free, Secure, Serverless Media Tools</p>
+        <p>무료 · 안전 · 서버 없는 미디어 도구</p>
     </header>
 
     <div class="coupang-ad-container">
-        <a href="https://link.coupang.com/a/eTe55vCi28" target="_blank" referrerpolicy="unsafe-url"><img src="https://ads-partners.coupang.com/banners/1000530?trackingCode=AF9195499&subId=&traceId=V0-301-879dd1202e5c73b2-I1000530&w=728&h=90" alt="Coupang Banner"></a>
+        <a href="https://link.coupang.com/a/eTe55vCi28" target="_blank" referrerpolicy="unsafe-url"><img src="https://ads-partners.coupang.com/banners/1000530?trackingCode=AF9195499&subId=&traceId=V0-301-879dd1202e5c73b2-I1000530&w=728&h=90" alt="쿠팡 배너"></a>
     </div>
 
     <nav class="nav" role="tablist">
-        <button onclick="switchTab('gif')" class="active" id="btn-gif" data-i18n="nav_gif">🎥 GIF Maker</button>
-        <button onclick="switchTab('webp')" id="btn-webp" data-i18n="nav_webp">⚡ WebP Convert</button>
-        <button onclick="switchTab('meme')" id="btn-meme" data-i18n="nav_meme">🤣 Meme Gen</button>
-        <button onclick="switchTab('audio')" id="btn-audio" data-i18n="nav_audio">🎵 Audio Extract</button>
-        <button onclick="switchTab('icon')" id="btn-icon" data-i18n="nav_icon">📱 Icon Gen</button>
+        <button onclick="switchTab('gif')" class="active" id="btn-gif">🖼️ GIF 만들기</button>
+        <button onclick="switchTab('webp')" id="btn-webp">⚡ WebP 변환</button>
+        <button onclick="switchTab('meme')" id="btn-meme">🤣 짤 만들기</button>
+        <button onclick="switchTab('audio')" id="btn-audio">🎵 오디오 추출</button>
+        <button onclick="switchTab('icon')" id="btn-icon">📱 아이콘 생성</button>
     </nav>
 
     <main>
-<section id="tab-gif" class="active">
-    <h2 data-i18n="h2_gif">Images to GIF Maker</h2>
-    <div class="guide">
-        <h3 data-i18n="guide_title">📖 How to use</h3>
-        <ol>
-            <li data-i18n="guide_gif_1">Upload 2–10 images (JPG, PNG, WebP).</li>
-            <li data-i18n="guide_gif_2">Set the frame delay (seconds per image).</li>
-            <li data-i18n="guide_gif_3">Click <b>Create GIF</b>.</li>
-        </ol>
-    </div>
-    <div class="upload-area">
-        <input type="file" id="gif-upload" accept="image/*" multiple>
-    </div>
-    <div class="controls" style="display:none;" id="gif-controls">
-        <label><span data-i18n="label_delay">Frame delay:</span>
-            <input type="number" id="gif-delay" value="0.5" min="0.1" max="5" step="0.1" style="width:60px"> sec
-        </label>
-    </div>
-    <button class="action-btn" onclick="executeWithAd('gif-upload', processGif)" data-i18n="btn_gif">Create GIF</button>
-    <div class="log" id="gif-log"></div>
-    <div id="gif-result"></div>
-</section>
-
-
-        <section id="tab-webp" style="display:none;">
-            <h2 data-i18n="h2_webp">JPG/PNG to WebP Converter</h2>
+        <!-- GIF 만들기 -->
+        <section id="tab-gif" class="active">
+            <h2>이미지로 GIF 만들기</h2>
             <div class="guide">
-                <h3 data-i18n="guide_title">📖 How to use</h3>
+                <h3>📖 사용 방법</h3>
                 <ol>
-                    <li data-i18n="guide_webp_1">Upload an image file.</li>
-                    <li data-i18n="guide_webp_2">Click <b>Convert & Download</b>.</li>
+                    <li>이미지를 2~10장 올려주세요 (JPG, PNG, WebP).</li>
+                    <li>프레임 간격(이미지 한 장당 보여줄 시간)을 정하세요.</li>
+                    <li><b>GIF 만들기</b> 버튼을 누르세요.</li>
+                </ol>
+            </div>
+            <div class="upload-area">
+                <input type="file" id="gif-upload" accept="image/*" multiple>
+            </div>
+            <div class="controls" style="display:none;" id="gif-controls">
+                <label>프레임 간격:
+                    <input type="number" id="gif-delay" value="0.5" min="0.1" max="5" step="0.1" style="width:60px"> 초
+                </label>
+            </div>
+            <button class="action-btn" onclick="executeWithAd('gif-upload', processGif)">GIF 만들기</button>
+            <div class="log" id="gif-log"></div>
+            <div id="gif-result"></div>
+        </section>
+
+        <!-- WebP 변환 -->
+        <section id="tab-webp" style="display:none;">
+            <h2>JPG/PNG → WebP 변환</h2>
+            <div class="guide">
+                <h3>📖 사용 방법</h3>
+                <ol>
+                    <li>이미지 파일을 올려주세요.</li>
+                    <li><b>변환 후 다운로드</b> 버튼을 누르세요.</li>
                 </ol>
             </div>
             <input type="file" id="webp-upload" accept="image/*">
-            <button class="action-btn" onclick="executeWithAd('webp-upload', processWebp)" data-i18n="btn_webp">Convert & Download</button>
+            <button class="action-btn" onclick="executeWithAd('webp-upload', processWebp)">변환 후 다운로드</button>
             <div class="log" id="webp-log"></div>
         </section>
 
+        <!-- 짤 만들기 -->
         <section id="tab-meme" style="display:none;">
-            <h2 data-i18n="h2_meme">Online Meme Generator</h2>
+            <h2>온라인 짤 생성기</h2>
             <div class="guide">
-                <h3 data-i18n="guide_title">📖 How to use</h3>
+                <h3>📖 사용 방법</h3>
                 <ol>
-                    <li data-i18n="guide_meme_1">Upload a photo.</li>
-                    <li data-i18n="guide_meme_2">Add Top/Bottom text.</li>
-                    <li data-i18n="guide_meme_3">Download your Meme.</li>
+                    <li>사진을 올려주세요.</li>
+                    <li>위/아래 문구를 입력하세요.</li>
+                    <li>완성된 짤을 저장하세요.</li>
                 </ol>
             </div>
             <input type="file" id="meme-upload" accept="image/*">
             <div class="inputs">
-                <input type="text" id="meme-top" placeholder="TOP TEXT" class="meme-input" data-i18n="ph_top">
-                <input type="text" id="meme-bottom" placeholder="BOTTOM TEXT" class="meme-input" data-i18n="ph_bottom">
+                <input type="text" id="meme-top" placeholder="위 문구" class="meme-input">
+                <input type="text" id="meme-bottom" placeholder="아래 문구" class="meme-input">
             </div>
             <canvas id="meme-canvas" style="display:none; max-width: 100%; height: auto; margin-top:10px;"></canvas>
             <br>
-            <button class="action-btn" onclick="executeWithAd('meme-upload', downloadMeme)" data-i18n="btn_meme">Save Meme</button>
+            <button class="action-btn" onclick="executeWithAd('meme-upload', downloadMeme)">짤 저장하기</button>
         </section>
 
+        <!-- 오디오 추출 -->
         <section id="tab-audio" style="display:none;">
-            <h2 data-i18n="h2_audio">Video to MP3 Audio Extractor</h2>
+            <h2>영상에서 MP3 추출</h2>
             <div class="guide">
-                <h3 data-i18n="guide_title">📖 How to use</h3>
+                <h3>📖 사용 방법</h3>
                 <ol>
-                    <li data-i18n="guide_audio_1">Upload a video file.</li>
-                    <li data-i18n="guide_audio_2">Click <b>Extract MP3</b>.</li>
+                    <li>영상 파일을 올려주세요.</li>
+                    <li><b>MP3 추출</b> 버튼을 누르세요.</li>
                 </ol>
             </div>
             <input type="file" id="audio-upload" accept="video/*">
-            <button class="action-btn" onclick="executeWithAd('audio-upload', processAudio)" data-i18n="btn_audio">Extract MP3</button>
+            <button class="action-btn" onclick="executeWithAd('audio-upload', processAudio)">MP3 추출</button>
             <div class="log" id="audio-log"></div>
             <div id="audio-result"></div>
         </section>
 
+        <!-- 아이콘 생성 -->
         <section id="tab-icon" style="display:none;">
-            <h2 data-i18n="h2_icon">App Icon Generator (iOS/Android)</h2>
+            <h2>앱 아이콘 생성기 (iOS/Android)</h2>
             <div class="guide">
-                <h3 data-i18n="guide_title">📖 How to use</h3>
+                <h3>📖 사용 방법</h3>
                 <ol>
-                    <li data-i18n="guide_icon_1">Upload a square image (1024x1024 recommended).</li>
-                    <li data-i18n="guide_icon_2">Generate icons for App Stores.</li>
+                    <li>정사각형 이미지를 올려주세요 (1024x1024 권장).</li>
+                    <li>앱스토어용 아이콘을 한 번에 생성하세요.</li>
                 </ol>
             </div>
             <input type="file" id="icon-upload" accept="image/*">
-            <button class="action-btn" onclick="executeWithAd('icon-upload', processIcon)" data-i18n="btn_icon">Generate Icons</button>
+            <button class="action-btn" onclick="executeWithAd('icon-upload', processIcon)">아이콘 생성</button>
             <div class="log" id="icon-log"></div>
             <div id="icon-result" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;"></div>
         </section>
 
+        <!-- SEO 섹션 -->
         <section class="seo-section">
-            <h2>Why Choose Imagify Pro?</h2>
+            <h2>왜 Imagify Pro인가요?</h2>
             <article>
-                <h3>🛡️ 100% Client-Side Secure Processing</h3>
-                <p>Unlike other online converters that upload your files to a remote server, <strong>Imagify Pro processes all your media directly in your browser</strong>. This means your personal videos, photos, and audio files never leave your device.</p>
+                <h3>🛡️ 100% 브라우저 처리로 안전하게</h3>
+                <p>파일을 서버에 올리는 다른 변환 사이트와 달리, <strong>Imagify Pro는 모든 작업을 내 브라우저 안에서 처리합니다</strong>. 개인 사진, 영상, 음성 파일이 내 기기 밖으로 나가지 않습니다.</p>
             </article>
             <article>
-                <h3>🚀 Fast & Efficient WebP Conversion</h3>
-                <p>Website speed is crucial for SEO. Our <strong>WebP Converter</strong> allows you to transform heavy JPG and PNG images into the modern WebP format.</p>
+                <h3>🚀 빠르고 가벼운 WebP 변환</h3>
+                <p>웹사이트 속도는 검색 노출에 중요합니다. <strong>WebP 변환기</strong>로 무거운 JPG, PNG 이미지를 가벼운 최신 WebP 포맷으로 바꿔보세요.</p>
             </article>
             <article>
-                <h3>🎥 High-Quality Video to GIF Maker</h3>
-                <p>Create engaging animated GIFs from your videos instantly. Whether you need a reaction GIF for social media or a tutorial snippet, our <strong>Video to GIF tool</strong> gives you control over the start time and duration.</p>
+                <h3>🖼️ 사진 여러 장으로 GIF 만들기</h3>
+                <p>사진 2~10장을 하나의 움직이는 GIF로 만들어보세요. SNS용 움짤, 제품 소개, 전후 비교 이미지까지 <strong>프레임 속도를 직접 조절</strong>할 수 있습니다.</p>
             </article>
             <article>
-                <h3>🎵 Instant Audio Extraction</h3>
-                <p>Need the soundtrack from a video? Our <strong>Video to MP3 Extractor</strong> uses powerful FFmpeg technology to strip audio from video files in seconds.</p>
+                <h3>🎵 영상에서 오디오만 빠르게 추출</h3>
+                <p>영상 속 음악이나 음성이 필요하신가요? <strong>MP3 추출기</strong>가 FFmpeg 기술로 몇 초 만에 오디오를 분리해 드립니다.</p>
             </article>
         </section>
     </main>
 
     <div class="coupang-ad-container">
-        <a href="https://link.coupang.com/a/eTe55vCi28" target="_blank" referrerpolicy="unsafe-url"><img src="https://ads-partners.coupang.com/banners/1000530?trackingCode=AF9195499&subId=&traceId=V0-301-879dd1202e5c73b2-I1000530&w=728&h=90" alt="Coupang Banner"></a>
+        <a href="https://link.coupang.com/a/eTe55vCi28" target="_blank" referrerpolicy="unsafe-url"><img src="https://ads-partners.coupang.com/banners/1000530?trackingCode=AF9195499&subId=&traceId=V0-301-879dd1202e5c73b2-I1000530&w=728&h=90" alt="쿠팡 배너"></a>
     </div>
 
     <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin: 50px 0 30px 0;">
-        <a href="https://www.buymeacoffee.com/tonycho" target="_blank" style="display: flex; align-items: center; background-color: #FFDD00; color: #000000; font-family: 'Cookie', cursive, sans-serif; font-size: 20px; font-weight: bold; padding: 10px 20px; border-radius: 50px; text-decoration: none; box-shadow: 0px 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
-            <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee" style="width: 25px; height: 25px; margin-right: 10px;">
-            <span style="font-family: Arial, sans-serif; font-weight: 600;">Buy me a coffee</span>
+        <a href="https://www.buymeacoffee.com/tonycho" target="_blank" style="display: flex; align-items: center; background-color: #FFDD00; color: #000000; font-size: 20px; font-weight: bold; padding: 10px 20px; border-radius: 50px; text-decoration: none; box-shadow: 0px 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+            <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="커피 한 잔 후원하기" style="width: 25px; height: 25px; margin-right: 10px;">
+            <span style="font-family: Arial, sans-serif; font-weight: 600;">커피 한 잔 후원하기</span>
         </a>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2024 Imagify Pro. All rights reserved.</p>
+        <p>&copy; 2024–2026 Imagify Pro. All rights reserved.</p>
         <p>
-            <a href="privacy-policy.html">Privacy Policy</a> | 
-            <a href="terms.html">Terms of Service</a> | 
-            <a href="mailto:contact@imagifypro.com">Contact</a>
+            <a href="privacy-policy.html">개인정보처리방침</a> |
+            <a href="terms.html">이용약관</a> |
+            <a href="mailto:contact@imagifypro.com">문의하기</a>
         </p>
     </footer>
 
-    <script src="js/lang.js"></script>
     <script src="js/main.js"></script>
     <script src="js/gif.js"></script>
     <script src="js/webp.js"></script>
     <script src="js/meme.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/icon.js"></script>
-
     <script>
         function autoReset(inputId) {
             setTimeout(() => {
                 const input = document.getElementById(inputId);
-                if (input) {
-                    input.value = '';
-                }
+                if (input) input.value = '';
             }, 1000);
         }
 
-function executeWithAd(inputId, actionCallback) {
-    actionCallback();
-    // GIF는 여러 장을 고른 채로 간격만 바꿔 다시 변환할 수 있게 초기화하지 않음
-    if (inputId !== 'gif-upload') autoReset(inputId);
-}
-
+        function executeWithAd(inputId, actionCallback) {
+            actionCallback();
+            // GIF는 여러 장을 고른 채로 간격만 바꿔 다시 변환할 수 있게 초기화하지 않음
+            if (inputId !== 'gif-upload') autoReset(inputId);
+        }
     </script>
-
 </body>
 </html>
