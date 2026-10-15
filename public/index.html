@@ -53,7 +53,7 @@
 
         /* GIF 이미지 목록 */
         .gif-list { list-style: none; padding: 0; margin: 15px auto; max-width: 520px; }
-        .gif-item { display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid #e5e7eb; border-radius: 10px; margin-bottom: 8px; background: #fff; }
+        .gif-item { display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid #e5e7eb; border-radius: 10px; margin-bottom: 4px; background: #fff; }
         .gif-num { width: 24px; height: 24px; border-radius: 50%; background: #4F46E5; color: #fff; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .gif-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
         .gif-delay { flex: 1; font-size: 0.9rem; }
@@ -61,7 +61,15 @@
         .gif-actions { display: flex; gap: 4px; }
         .gif-actions button { border: 1px solid #d1d5db; background: #f9fafb; border-radius: 6px; width: 30px; height: 30px; cursor: pointer; }
         .gif-actions button:disabled { opacity: 0.3; cursor: default; }
+
+        /* 전환(페이드) 줄 */
+        .gif-trans { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; font-size: 0.85rem; color: #4F46E5; padding: 6px 4px; margin-bottom: 4px; }
+        .gif-trans input { width: 56px; }
+        .gif-trans.loop { color: #6b7280; border-top: 1px dashed #d1d5db; margin-top: 6px; padding-top: 10px; }
+        .gif-trans-hint { color: #6b7280; font-size: 0.8rem; }
+
         .gif-bulk { max-width: 520px; margin: 10px auto; font-size: 0.9rem; text-align: center; color: #374151; }
+        .gif-bulk-row { display: flex; gap: 6px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 6px; }
         .gif-ask { max-width: 520px; margin: 15px auto; padding: 16px; background: #EEF2FF; border-radius: 12px; text-align: center; }
         .gif-ask-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
         .btn-secondary { background: #fff !important; color: #4F46E5 !important; border: 1px solid #4F46E5 !important; }
@@ -108,7 +116,7 @@
                 <h3>📖 사용 방법</h3>
                 <ol>
                     <li>이미지를 한 장씩 추가하세요 (최소 2장, 최대 10장).</li>
-                    <li>이미지마다 보여줄 시간(초)을 정하세요.</li>
+                    <li>이미지마다 보여줄 시간과, 이미지 사이 전환(페이드) 시간을 정하세요.</li>
                     <li><b>GIF 만들기</b> 버튼을 누르세요.</li>
                 </ol>
             </div>
@@ -119,10 +127,17 @@
             <ul id="gif-list" class="gif-list"></ul>
 
             <div id="gif-bulk" class="gif-bulk" style="display:none;">
-                모든 이미지
-                <input type="number" id="gif-delay-all" value="0.5" min="0.1" max="10" step="0.1" style="width:60px"> 초로
-                <button type="button" onclick="applyDelayAll()">전체 적용</button>
-                <div id="gif-total" style="margin-top:6px; color:#6b7280;"></div>
+                <div class="gif-bulk-row">
+                    ⏱️ 모든 이미지
+                    <input type="number" id="gif-delay-all" value="0.5" min="0.1" max="10" step="0.1" style="width:60px"> 초 표시
+                    <button type="button" onclick="applyDelayAll()">전체 적용</button>
+                </div>
+                <div class="gif-bulk-row">
+                    ✨ 모든 전환
+                    <input type="number" id="gif-fade-all" value="0.5" min="0" max="3" step="0.1" style="width:60px"> 초 페이드
+                    <button type="button" onclick="applyFadeAll()">전체 적용</button>
+                </div>
+                <div id="gif-total" style="margin-top:8px; color:#6b7280;"></div>
             </div>
 
             <div id="gif-ask" class="gif-ask" style="display:none;">
@@ -219,7 +234,7 @@
             </article>
             <article>
                 <h3>🖼️ 사진 여러 장으로 GIF 만들기</h3>
-                <p>사진 2~10장을 하나의 움직이는 GIF로 만들어보세요. SNS용 움짤, 제품 소개, 전후 비교 이미지까지 <strong>이미지마다 보여줄 시간을 직접 조절</strong>할 수 있습니다.</p>
+                <p>사진 2~10장을 하나의 움직이는 GIF로 만들어보세요. <strong>이미지마다 보여줄 시간과 부드러운 페이드 전환 시간</strong>을 직접 조절할 수 있습니다.</p>
             </article>
             <article>
                 <h3>🎵 영상에서 오디오만 빠르게 추출</h3>
@@ -263,7 +278,7 @@
             }, 1000);
         }
 
-        // 도구 실행 (GIF 탭은 processGif()를 직접 호출하므로 여기 안 거침)
+        // 도구 실행 (GIF 탭은 processGif()를 직접 호출)
         function runTool(inputId, actionCallback) {
             actionCallback();
             autoReset(inputId);
